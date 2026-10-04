@@ -67,17 +67,6 @@ textarea,
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Force Hardware Acceleration for Fast Click & Hover Paints */
-.btn-primary,
-.btn-hero-primary,
-.btn-career-primary,
-.btn-career-secondary,
-.globe-floating-portal,
-.nav-cta-btn,
-.nav-mobile-toggle {
-  transform: translateZ(0);
-}
-
 img {
   display: block;
   max-width: 100%;
