@@ -98,20 +98,40 @@ export default function DMLeadModal({ isOpen, onClose }) {
               </div>
             )}
 
-            <div className="lead-field-group">
-              <label className="lead-field-label">Company Name *</label>
-              <input
-                type="text"
-                name="companyName"
-                placeholder="e.g. Acme Enterprise Corp"
-                value={formData.companyName}
-                onChange={handleChange}
-                className="lead-field-input"
-                required
-              />
+            <div className="lead-form-row">
+              <div className="lead-field-group">
+                <label className="lead-field-label">Company Name *</label>
+                <input
+                  type="text"
+                  name="companyName"
+                  placeholder="e.g. Acme Enterprise Corp"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  className="lead-field-input"
+                  required
+                />
+              </div>
+
+              <div className="lead-field-group">
+                <label className="lead-field-label">Business Category</label>
+                <select
+                  name="businessCategory"
+                  value={formData.businessCategory}
+                  onChange={handleChange}
+                  className="lead-field-select"
+                >
+                  <option value="E-Commerce & Retail">E-Commerce &amp; Retail</option>
+                  <option value="Software & SaaS">Software &amp; SaaS</option>
+                  <option value="Education & Training">Education &amp; Training</option>
+                  <option value="Healthcare & Wellness">Healthcare &amp; Wellness</option>
+                  <option value="Real Estate & Infrastructure">Real Estate &amp; Infrastructure</option>
+                  <option value="Finance & Fintech">Finance &amp; Fintech</option>
+                  <option value="Other Industry">Other Industry</option>
+                </select>
+              </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="lead-form-row">
               <div className="lead-field-group">
                 <label className="lead-field-label">Phone Number *</label>
                 <input
@@ -137,24 +157,6 @@ export default function DMLeadModal({ isOpen, onClose }) {
                   required
                 />
               </div>
-            </div>
-
-            <div className="lead-field-group">
-              <label className="lead-field-label">Business Category</label>
-              <select
-                name="businessCategory"
-                value={formData.businessCategory}
-                onChange={handleChange}
-                className="lead-field-select"
-              >
-                <option value="E-Commerce & Retail">E-Commerce &amp; Retail</option>
-                <option value="Software & SaaS">Software &amp; SaaS</option>
-                <option value="Education & Training">Education &amp; Training</option>
-                <option value="Healthcare & Wellness">Healthcare &amp; Wellness</option>
-                <option value="Real Estate & Infrastructure">Real Estate &amp; Infrastructure</option>
-                <option value="Finance & Fintech">Finance &amp; Fintech</option>
-                <option value="Other Industry">Other Industry</option>
-              </select>
             </div>
 
             <div className="lead-field-group">

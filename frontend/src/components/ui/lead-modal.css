@@ -2,21 +2,22 @@
    KODEWAR LEAD COLLECTION POPUP MODALS
    Theme: Strict Monochrome (#000000, #09090C, #111218, #FFFFFF)
    Accents: Blacks, Whites, Greys
+   Single View Compact Layout
    ================================================== */
 
 .lead-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: 1rem;
   box-sizing: border-box;
-  animation: leadModalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: leadModalFadeIn 0.25s ease-out forwards;
 }
 
 @keyframes leadModalFadeIn {
@@ -31,20 +32,34 @@
 .lead-modal-card {
   position: relative;
   background: #09090C;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
   width: 100%;
-  max-width: 560px;
-  padding: clamp(2rem, 4vw, 3rem);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95);
+  max-width: 620px;
+  max-height: 92vh;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95);
   box-sizing: border-box;
-  animation: leadModalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow-y: auto;
+  animation: leadModalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar for Modal Card */
+.lead-modal-card::-webkit-scrollbar {
+  width: 5px;
+}
+.lead-modal-card::-webkit-scrollbar-track {
+  background: #050507;
+}
+.lead-modal-card::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 3px;
 }
 
 @keyframes leadModalSlideUp {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.97);
+    transform: translateY(12px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -52,77 +67,95 @@
   }
 }
 
+/* Prominent Top Right Close Button */
 .lead-modal-close-btn {
   position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  width: 34px;
-  height: 34px;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #050507;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #A1A1AA;
+  background: #111218;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .lead-modal-close-btn:hover {
   background: #FFFFFF;
   color: #000000;
   border-color: #FFFFFF;
-  transform: rotate(90deg);
+  transform: scale(1.08);
 }
 
 .lead-modal-eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.725rem;
+  font-size: 0.675rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #A1A1AA;
-  margin-bottom: 0.5rem;
+  color: #9CA3AF;
+  margin-bottom: 0.25rem;
+  padding-right: 2.5rem;
 }
 
 .lead-modal-title {
   font-family: 'Syne', 'Sora', sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
   font-weight: 800;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: #FFFFFF;
   text-transform: uppercase;
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.35rem 0;
+  padding-right: 2.5rem;
 }
 
 .lead-modal-subtitle {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: #8A8A8A;
-  margin: 0 0 1.75rem 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #9CA3AF;
+  margin: 0 0 1rem 0;
 }
 
-/* Form Fields */
+/* Form Layout */
 .lead-modal-form {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: 0.65rem;
+}
+
+.lead-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 540px) {
+  .lead-form-row {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
 }
 
 .lead-field-group {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.25rem;
 }
 
 .lead-field-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.725rem;
+  font-size: 0.675rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #A1A1AA;
 }
@@ -131,12 +164,12 @@
 .lead-field-select,
 .lead-field-textarea {
   width: 100%;
-  height: 2.85rem;
+  height: 2.35rem;
   background: #050507;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 0;
-  padding: 0 1rem;
-  font-size: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 2px;
+  padding: 0 0.75rem;
+  font-size: 0.825rem;
   color: #FFFFFF;
   font-family: inherit;
   transition: all 0.2s ease;
@@ -145,8 +178,8 @@
 
 .lead-field-textarea {
   height: auto;
-  min-height: 70px;
-  padding: 0.75rem 1rem;
+  min-height: 55px;
+  padding: 0.5rem 0.75rem;
   resize: vertical;
 }
 
@@ -156,7 +189,7 @@
   outline: none;
   border-color: #FFFFFF;
   background: #111218;
-  box-shadow: 0 0 0 1px #FFFFFF, 0 4px 16px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 1px #FFFFFF, 0 2px 10px rgba(255, 255, 255, 0.08);
 }
 
 .lead-field-select option {
@@ -169,25 +202,26 @@
   color: #000000;
   font-family: 'Syne', 'Sora', sans-serif;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border: 1px solid #FFFFFF;
-  border-radius: 0;
-  padding: 0.875rem 1.5rem;
+  border-radius: 2px;
+  padding: 0.75rem 1.25rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
-  transition: all 0.25s ease;
-  margin-top: 0.5rem;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  margin-top: 0.35rem;
+  width: 100%;
 }
 
 .lead-submit-btn:hover:not(:disabled) {
   background: #E5E7EB;
   border-color: #E5E7EB;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
 }
 
 .lead-submit-btn:disabled {
@@ -198,10 +232,10 @@
 .lead-success-msg {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 1.5rem;
+  padding: 1.25rem;
   text-align: center;
   color: #FFFFFF;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
-  line-height: 1.6;
+  font-size: 0.825rem;
+  line-height: 1.5;
 }

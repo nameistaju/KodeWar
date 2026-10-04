@@ -98,7 +98,7 @@ export default function CareerLeadModal({ isOpen, onClose }) {
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="lead-form-row">
               <div className="lead-field-group">
                 <label className="lead-field-label">Full Name *</label>
                 <input
@@ -126,20 +126,20 @@ export default function CareerLeadModal({ isOpen, onClose }) {
               </div>
             </div>
 
-            <div className="lead-field-group">
-              <label className="lead-field-label">Institution / College Name *</label>
-              <input
-                type="text"
-                name="institutionName"
-                placeholder="University / College / Institute"
-                value={formData.institutionName}
-                onChange={handleChange}
-                className="lead-field-input"
-                required
-              />
-            </div>
+            <div className="lead-form-row">
+              <div className="lead-field-group">
+                <label className="lead-field-label">Institution / College *</label>
+                <input
+                  type="text"
+                  name="institutionName"
+                  placeholder="University / College"
+                  value={formData.institutionName}
+                  onChange={handleChange}
+                  className="lead-field-input"
+                  required
+                />
+              </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div className="lead-field-group">
                 <label className="lead-field-label">Passing Year</label>
                 <select
@@ -155,22 +155,22 @@ export default function CareerLeadModal({ isOpen, onClose }) {
                   <option value="2028+">2028 or later</option>
                 </select>
               </div>
+            </div>
 
-              <div className="lead-field-group">
-                <label className="lead-field-label">Primary Purpose</label>
-                <select
-                  name="purpose"
-                  value={formData.purpose}
-                  onChange={handleChange}
-                  className="lead-field-select"
-                >
-                  <option value="Student Training / Incubator">Student Training / Incubator</option>
-                  <option value="Full-Time Engineering Opening">Full-Time Engineering Opening</option>
-                  <option value="Internship / Apprenticeship">Internship / Apprenticeship</option>
-                  <option value="Campus Hiring Drive">Campus Hiring Drive</option>
-                  <option value="General Career Inquiry">General Career Inquiry</option>
-                </select>
-              </div>
+            <div className="lead-field-group">
+              <label className="lead-field-label">Primary Purpose</label>
+              <select
+                name="purpose"
+                value={formData.purpose}
+                onChange={handleChange}
+                className="lead-field-select"
+              >
+                <option value="Student Training / Incubator">Student Training / Incubator</option>
+                <option value="Full-Time Engineering Opening">Full-Time Engineering Opening</option>
+                <option value="Internship / Apprenticeship">Internship / Apprenticeship</option>
+                <option value="Campus Hiring Drive">Campus Hiring Drive</option>
+                <option value="General Career Inquiry">General Career Inquiry</option>
+              </select>
             </div>
 
             <button type="submit" className="lead-submit-btn" disabled={loading}>
