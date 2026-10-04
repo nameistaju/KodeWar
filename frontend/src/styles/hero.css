@@ -323,13 +323,21 @@
   }
 }
 
-/* PROUD TO SUPPORT STYLING */
+/* HERO BOTTOM ROW (Proud to Support & Interactive Portals) */
+.hero-bottom-row {
+  margin-top: clamp(16px, 2.5vh, 28px);
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(16px, 2.5vw, 32px);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .hero-proud-support {
-  margin-top: clamp(18px, 2.8vh, 32px);
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100%;
 }
 
 .hero-proud-title {
@@ -374,3 +382,39 @@
 .hero-proud-logo-item img:hover {
   filter: brightness(0) invert(1) opacity(1);
 }
+
+/* INTERACTIVE PORTAL IMAGES (No borders, pure images) */
+.hero-interactive-portals {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(12px, 1.8vw, 22px);
+}
+
+.hero-portal-link {
+  display: inline-block;
+  text-decoration: none;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.hero-portal-img {
+  height: clamp(90px, 13vh, 135px);
+  width: auto;
+  object-fit: contain;
+  display: block;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.hero-portal-link:hover .hero-portal-img {
+  transform: translateY(-4px) scale(1.05);
+}
+

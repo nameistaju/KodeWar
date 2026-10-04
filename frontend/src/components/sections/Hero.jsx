@@ -119,31 +119,52 @@ export default function Hero() {
               </Link>
             </div>
 
-            {/* Proud to Support Section */}
-            <div className="hero-proud-support">
-              <span className="hero-proud-title">Proud to Support</span>
-              <div className="hero-proud-logos">
-                <div className="hero-proud-logo-item">
-                  <img
-                    src="/logos/ministry-of-labour-and-employment-logo.webp"
-                    alt="Ministry of Labour & Employment"
-                    title="Ministry of Labour & Employment"
-                  />
+            {/* Bottom Row: Proud to Support & Interactive Portals */}
+            <div className="hero-bottom-row">
+              {/* Proud to Support Section */}
+              <div className="hero-proud-support">
+                <span className="hero-proud-title">Proud to Support</span>
+                <div className="hero-proud-logos">
+                  <div className="hero-proud-logo-item">
+                    <img
+                      src="/logos/ministry-of-labour-and-employment-logo.webp"
+                      alt="Ministry of Labour & Employment"
+                      title="Ministry of Labour & Employment"
+                    />
+                  </div>
+                  <div className="hero-proud-logo-item">
+                    <img
+                      src="/logos/imgi_89_image.webp"
+                      alt="AICTE"
+                      title="AICTE"
+                    />
+                  </div>
+                  <div className="hero-proud-logo-item">
+                    <img
+                      src="/logos/DPIIT-header-new.webp"
+                      alt="DPIIT #startupindia"
+                      title="DPIIT #startupindia"
+                    />
+                  </div>
                 </div>
-                <div className="hero-proud-logo-item">
+              </div>
+
+              {/* Businessman & Student Interactive Images */}
+              <div className="hero-interactive-portals">
+                <Link to="/digital-marketing" className="hero-portal-link" title="Digital Marketing">
                   <img
-                    src="/logos/imgi_89_image.webp"
-                    alt="AICTE"
-                    title="AICTE"
+                    src="/businessMan.png"
+                    alt="Digital Marketing Solutions"
+                    className="hero-portal-img"
                   />
-                </div>
-                <div className="hero-proud-logo-item">
+                </Link>
+                <Link to="/careers" className="hero-portal-link" title="Careers & Training">
                   <img
-                    src="/logos/DPIIT-header-new.webp"
-                    alt="DPIIT #startupindia"
-                    title="DPIIT #startupindia"
+                    src="/Cheerful Student.png"
+                    alt="Student Careers"
+                    className="hero-portal-img"
                   />
-                </div>
+                </Link>
               </div>
             </div>
           </div>
