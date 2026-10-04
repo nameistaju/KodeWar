@@ -1,378 +1,151 @@
-.onboarding-timeline-section {
+/* ==================================================
+   KODEWAR — HOW IT WORKS (ONBOARDING PROCESS GRID)
+   Theme: Dark Graphite, Minimal Luxury, Monochrome + Yellow Accents
+   ================================================== */
+
+.how-it-works-section {
   position: relative;
   width: 100%;
+  padding: clamp(80px, 10vh, 130px) clamp(24px, 5vw, 64px);
   background-color: #030304;
-  color: #ffffff;
-  overflow: hidden;
+  color: #FFFFFF;
   box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.onboarding-sticky-viewport {
-  position: relative;
+.how-it-works-container {
+  max-width: 1400px;
+  margin: 0 auto;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  background-color: #030304;
 }
 
-.onboarding-slider-track {
-  display: flex;
-  flex-wrap: nowrap !important;
-  align-items: center;
-  height: 520px;
-  width: max-content !important;
-  padding-left: 60px;
-  padding-right: 120px;
-  box-sizing: border-box;
-  position: relative;
-  will-change: transform;
-  flex-shrink: 0;
-}
-
-/* Cover Image Card */
-.onboarding-cover-card {
-  width: 320px;
-  height: 440px;
-  flex-shrink: 0;
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background-color: #08080a;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-  margin-right: 60px;
-}
-
-.onboarding-cover-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.onboarding-cover-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(3, 3, 4, 0.95) 0%, rgba(3, 3, 4, 0.25) 60%, transparent 100%);
-}
-
-.onboarding-cover-caption {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
-}
-
-.onboarding-cover-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.onboarding-cover-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-top: 4px;
-  margin-bottom: 0;
-}
-
-/* Main Timeline Grid Track */
-.onboarding-grid-track {
-  position: relative;
-  width: 1800px;
-  height: 480px;
-  flex-shrink: 0;
+.how-it-works-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 56px auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-wrap: nowrap !important;
+  align-items: center;
 }
 
-/* Central Horizontal Line */
-.onboarding-central-line-bg {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  height: 2px;
-  background-color: rgba(255, 255, 255, 0.15);
-  z-index: 1;
-}
-
-.journey-progress-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  height: 2px;
-  width: 0%;
-  z-index: 2;
-  box-shadow: 0 0 12px rgba(255, 214, 0, 0.8);
-}
-
-/* Row Containers */
-.onboarding-row-top {
-  height: 220px;
-  display: flex;
-  align-items: flex-end;
-  position: relative;
-  z-index: 3;
-  flex-wrap: nowrap !important;
-  flex-shrink: 0;
-}
-
-.onboarding-row-bottom {
-  height: 220px;
-  display: flex;
-  align-items: flex-start;
-  position: relative;
-  z-index: 3;
-  flex-wrap: nowrap !important;
-  flex-shrink: 0;
-}
-
-/* Intro Headers */
-.onboarding-header-block {
-  width: 320px;
-  margin-right: 60px;
-  flex-shrink: 0;
-  padding-bottom: 10px;
-}
-
-.onboarding-header-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-
-.onboarding-header-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.onboarding-header-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
-  color: #94a3b8;
-  margin-top: 10px;
-  line-height: 1.6;
-}
-
-.onboarding-period-block {
-  width: 320px;
-  margin-right: 60px;
-  padding-top: 20px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  color: #94a3b8;
-  letter-spacing: 0.18em;
-  flex-shrink: 0;
-}
-
-/* Stages Containers */
-.onboarding-stages-group-top {
-  display: flex;
-  gap: 220px;
-  flex-shrink: 0;
-  flex-wrap: nowrap !important;
-}
-
-.onboarding-stages-group-bottom {
-  display: flex;
-  gap: 220px;
-  margin-left: 270px;
-  flex-shrink: 0;
-  flex-wrap: nowrap !important;
-}
-
-/* Stage Card Layout */
-.onboarding-stage-top {
-  width: 300px;
-  position: relative;
-  padding-bottom: 24px;
-  flex-shrink: 0;
-  box-sizing: border-box;
-}
-
-.onboarding-stage-bottom {
-  width: 300px;
-  position: relative;
-  padding-top: 24px;
-  flex-shrink: 0;
-  box-sizing: border-box;
-}
-
-/* Vertical Stems & Dots */
-.onboarding-stem-top {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  top: 16px;
-  width: 2px;
-  transform-origin: bottom center;
-  z-index: 4;
-}
-
-.onboarding-dot-top {
-  position: absolute;
-  left: -6px;
-  bottom: -7px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  z-index: 10;
-  box-shadow: 0 0 12px rgba(255, 214, 0, 0.8);
-}
-
-.onboarding-stem-bottom {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 16px;
-  width: 2px;
-  transform-origin: top center;
-  z-index: 4;
-}
-
-.onboarding-dot-bottom {
-  position: absolute;
-  left: -6px;
-  top: -7px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  z-index: 10;
-  box-shadow: 0 0 12px rgba(255, 214, 0, 0.8);
-}
-
-/* Stage Typography */
-.onboarding-stage-content {
-  padding-left: 24px;
-  opacity: 1;
-}
-
-.onboarding-stage-num {
+.how-it-works-badge {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  display: inline-block;
+  background: rgba(255, 214, 0, 0.08);
+  border: 1px solid rgba(255, 214, 0, 0.22);
+  padding: 4px 14px;
+  border-radius: 9999px;
 }
 
-.onboarding-stage-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
+.how-it-works-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
   font-weight: 800;
-  color: #ffffff;
-  margin: 0 0 8px 0;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  margin: 0 0 14px 0;
+  line-height: 1.1;
 }
 
-.onboarding-stage-text {
+.how-it-works-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
-  color: #94a3b8;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.65;
+  color: #9CA3AF;
   margin: 0;
-  line-height: 1.6;
 }
 
-/* Responsive adjustments for mobile/tablet screens */
-@media (max-width: 1024px) {
-  .onboarding-timeline-section {
-    min-height: auto;
-    padding: 60px 20px;
-    width: 100%;
-  }
-  .onboarding-sticky-viewport {
-    position: relative;
-    height: auto !important;
-    overflow: visible;
-    display: block;
-  }
-  .onboarding-slider-track {
-    display: flex;
-    flex-direction: column !important;
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    height: auto !important;
-    padding: 0 !important;
-    transform: none !important;
-    margin: 0 !important;
-  }
-  .onboarding-cover-card {
-    width: 100% !important;
-    max-width: 100%;
-    height: 260px !important;
-    margin: 0 0 32px 0 !important;
-    border-radius: 16px;
-  }
-  .onboarding-grid-track {
-    width: 100% !important;
-    height: auto !important;
-    display: flex;
-    flex-direction: column !important;
-    gap: 32px;
-  }
-  .onboarding-central-line-bg,
-  .journey-progress-line {
-    display: none !important;
-  }
-  .onboarding-row-top,
-  .onboarding-row-bottom {
-    height: auto !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    align-items: stretch !important;
+/* 4-Step Cards Grid */
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  position: relative;
+}
+
+@media (max-width: 1200px) {
+  .how-it-works-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
-  .onboarding-header-block {
-    width: 100% !important;
-    margin-right: 0 !important;
-    margin-bottom: 16px !important;
-  }
-  .onboarding-period-block {
-    display: none !important;
-  }
-  .onboarding-stages-group-top,
-  .onboarding-stages-group-bottom {
-    flex-direction: column !important;
+}
+
+@media (max-width: 640px) {
+  .how-it-works-grid {
+    grid-template-columns: 1fr;
     gap: 20px;
-    margin-left: 0 !important;
-    width: 100% !important;
   }
-  .onboarding-stage-top,
-  .onboarding-stage-bottom {
-    width: 100% !important;
-    padding: 20px 24px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    box-sizing: border-box;
-  }
-  .onboarding-stem-top,
-  .onboarding-dot-top,
-  .onboarding-stem-bottom,
-  .onboarding-dot-bottom {
-    display: none !important;
-  }
-  .onboarding-stage-content {
-    padding-left: 0 !important;
-  }
+}
+
+.how-it-works-card {
+  position: relative;
+  background: #0B0C10;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.how-it-works-card:hover {
+  background: #0F1016;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+}
+
+.how-it-works-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.how-it-works-card-num {
+  font-family: 'Sora', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.how-it-works-card-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 214, 0, 0.7);
+}
+
+.how-it-works-card-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.how-it-works-card-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 12px 0;
+  line-height: 1.25;
+}
+
+.how-it-works-card-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.62;
+  color: #94A3B8;
+  margin: 0;
 }
