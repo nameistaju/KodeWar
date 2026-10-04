@@ -1,6 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContext';
+import React, { useState, useEffect } from 'react';
 
 export default function CareerHero({
   searchTerm = '',
@@ -10,7 +8,20 @@ export default function CareerHero({
   selectedCategory = 'All',
   setSelectedCategory = () => {},
 }) {
-  const { user } = useAuth();
+  const [lang, setLang] = useState('en'); // 'en' = English, 'te' = Telugu
+
+  useEffect(() => {
+    // Respect user's motion preference
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    // Transition smoothly between English and Telugu every 5.5s
+    const timer = setInterval(() => {
+      setLang((prev) => (prev === 'en' ? 'te' : 'en'));
+    }, 5500);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleScrollToRoles = (e) => {
     e.preventDefault();
@@ -38,12 +49,36 @@ export default function CareerHero({
       <div className="career-hero-container">
         {/* LEFT COLUMN — Content & Actions */}
         <div className="career-hero-col-text">
-          {/* Reference-style Headline */}
-          <h1 className="career-hero-find-title">
-            <span>Find Your <span className="career-title-pill-arrow">⟶</span></span>
-            <span>Dream Job Here</span>
-            <span>In One Place</span>
-          </h1>
+          
+          {/* Seamless Animated Bilingual Headline Block */}
+          <div className="career-headline-bilingual-wrapper">
+            <div className="career-headline-stack">
+              {/* ENGLISH VERSION */}
+              <h1
+                className={`career-hero-find-title english-title ${lang === 'en' ? 'is-active' : 'is-hidden-up'}`}
+                lang="en"
+                aria-hidden={lang !== 'en'}
+              >
+                <span>
+                  Find Your <span className="career-title-pill-arrow">⟶</span>
+                </span>
+                <span>Dream Job Here</span>
+                <span>In One Place</span>
+              </h1>
+
+              {/* TELUGU VERSION */}
+              <h1
+                className={`career-hero-find-title telugu-title ${lang === 'te' ? 'is-active' : 'is-hidden-down'}`}
+                lang="te"
+                aria-hidden={lang !== 'te'}
+              >
+                <span>
+                  మీ కలల ఉద్యోగాన్ని <span className="career-title-pill-arrow">⟶</span>
+                </span>
+                <span>ఒకే చోట కనుగొనండి</span>
+              </h1>
+            </div>
+          </div>
 
           {/* Subtitle */}
           <p className="career-hero-find-desc">
@@ -112,16 +147,6 @@ export default function CareerHero({
             >
               <span>EXPLORE INCUBATOR</span>
             </a>
-
-            {user ? (
-              <Link to="/careers/dashboard" className="btn-career-secondary">
-                <span>MY DASHBOARD ↗</span>
-              </Link>
-            ) : (
-              <Link to="/careers/login" className="btn-career-secondary">
-                <span>CANDIDATE PORTAL ↗</span>
-              </Link>
-            )}
           </div>
         </div>
 
@@ -131,6 +156,8 @@ export default function CareerHero({
             src="/Modern Job Search Illustration.png"
             alt="Modern Job Search Illustration"
             className="career-hero-illustration-pure"
+            width="540"
+            height="420"
           />
         </div>
       </div>

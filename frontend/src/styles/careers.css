@@ -24,10 +24,10 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: clamp(60px, 8vh, 100px) clamp(24px, 5vw, 64px);
+  padding: clamp(110px, 14vh, 160px) clamp(24px, 5vw, 64px) clamp(40px, 6vh, 80px);
   background-color: #030304;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .career-hero-vignette {
@@ -58,40 +58,24 @@
   align-items: flex-start;
 }
 
-/* Seamless Telugu ➔ English Headline Morph */
-.career-headline-morph-wrap {
-  display: inline-grid;
-  grid-template-areas: "morph";
-  align-items: center;
+/* Seamless Telugu ➔ English Animated Headline Stack */
+.career-headline-bilingual-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: clamp(130px, 15vw, 210px);
+  margin-bottom: 12px;
 }
 
-.career-headline-morph {
-  grid-area: morph;
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s ease;
-  will-change: opacity, transform, filter;
+.career-headline-stack {
+  display: grid;
+  grid-template-areas: "stack";
+  align-items: flex-start;
+  min-height: clamp(130px, 15vw, 210px);
 }
 
-.career-headline-morph.active {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0px);
-  pointer-events: auto;
-}
-
-.career-headline-morph.inactive {
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(4px);
-  pointer-events: none;
-}
-
-.career-headline-morph.telugu-text {
-  font-family: 'Sora', 'Segoe UI', -apple-system, sans-serif;
-  letter-spacing: -0.01em;
-}
-
-/* Reference Image 1: Find Your [arrow] Dream Job Here In One Place */
+/* Headline Typography */
 .career-hero-find-title {
+  grid-area: stack;
   margin: 0;
   font-family: 'Sora', sans-serif;
   font-size: clamp(36px, 4.4vw, 64px);
@@ -101,6 +85,35 @@
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s ease;
+  will-change: transform, opacity, filter;
+}
+
+.career-hero-find-title.telugu-title {
+  font-family: 'Noto Sans Telugu', 'Sora', sans-serif;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
+}
+
+.career-hero-find-title.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+  pointer-events: auto;
+}
+
+.career-hero-find-title.is-hidden-up {
+  opacity: 0;
+  transform: translateY(-16px);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.career-hero-find-title.is-hidden-down {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(8px);
+  pointer-events: none;
 }
 
 .career-title-row {
@@ -178,24 +191,28 @@
   transform: translateY(-2px);
 }
 
+/* Loud Yellow Accent Arrow */
 .career-title-pill-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #FFFFFF;
+  border: 2px solid #FFD400;
   border-radius: 9999px;
-  padding: 4px 14px;
+  padding: 4px 16px;
   margin-left: 14px;
   vertical-align: middle;
-  color: #FFFFFF;
+  color: #FFD400;
+  background: rgba(255, 212, 0, 0.08);
   line-height: 1;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 0 16px rgba(255, 212, 0, 0.25);
+  transition: all 0.25s ease;
 }
 
 .career-title-pill-arrow:hover {
-  transform: translateX(4px);
-  border-color: #00E5FF;
-  color: #00E5FF;
+  transform: translateX(6px);
+  background: #FFD400;
+  color: #050505;
+  box-shadow: 0 0 24px rgba(255, 212, 0, 0.5);
 }
 
 .career-hero-find-desc {
@@ -329,11 +346,16 @@
 
 @media (max-width: 768px) {
   .career-hero-section {
-    padding-top: 100px !important;
+    padding-top: 110px !important;
     padding-bottom: 40px !important;
     padding-left: 20px !important;
     padding-right: 20px !important;
     overflow: visible !important;
+  }
+
+  .career-headline-bilingual-wrapper,
+  .career-headline-stack {
+    min-height: clamp(110px, 20vw, 160px);
   }
 
   .career-hero-container {
@@ -343,7 +365,7 @@
   }
 
   .career-hero-find-title {
-    font-size: clamp(28px, 7vw, 42px);
+    font-size: clamp(26px, 6.8vw, 40px);
   }
 
   .career-search-pill-bar {
