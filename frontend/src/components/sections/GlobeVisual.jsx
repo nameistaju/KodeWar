@@ -255,33 +255,55 @@ export default function GlobeVisual() {
   }, []);
 
   // Pointer Drag Interaction
+  const pointerMoveRaf = useRef(null);
+
   const handlePointerDown = (e) => {
     pointerDown.current = true;
     lastPointerX.current = e.clientX;
     lastPointerY.current = e.clientY;
     if (canvasRef.current) {
       canvasRef.current.style.cursor = 'grabbing';
+      try {
+        canvasRef.current.setPointerCapture(e.pointerId);
+      } catch (_) {}
     }
   };
 
   const handlePointerMove = (e) => {
     if (!pointerDown.current) return;
-    const dx = e.clientX - lastPointerX.current;
-    const dy = e.clientY - lastPointerY.current;
-    lastPointerX.current = e.clientX;
-    lastPointerY.current = e.clientY;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
 
-    const factor = 0.0055;
-    phiRef.current += dx * factor;
-    thetaRef.current = Math.max(-0.65, Math.min(0.65, thetaRef.current + dy * factor));
-    velocityPhi.current = dx * 0.002;
-    velocityTheta.current = dy * 0.002;
+    if (pointerMoveRaf.current) return;
+
+    pointerMoveRaf.current = requestAnimationFrame(() => {
+      pointerMoveRaf.current = null;
+      if (!pointerDown.current) return;
+
+      const dx = clientX - lastPointerX.current;
+      const dy = clientY - lastPointerY.current;
+      lastPointerX.current = clientX;
+      lastPointerY.current = clientY;
+
+      const factor = 0.0055;
+      phiRef.current += dx * factor;
+      thetaRef.current = Math.max(-0.65, Math.min(0.65, thetaRef.current + dy * factor));
+      velocityPhi.current = dx * 0.002;
+      velocityTheta.current = dy * 0.002;
+    });
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e) => {
     pointerDown.current = false;
+    if (pointerMoveRaf.current) {
+      cancelAnimationFrame(pointerMoveRaf.current);
+      pointerMoveRaf.current = null;
+    }
     if (canvasRef.current) {
       canvasRef.current.style.cursor = 'grab';
+      try {
+        if (e && e.pointerId) canvasRef.current.releasePointerCapture(e.pointerId);
+      } catch (_) {}
     }
   };
 
