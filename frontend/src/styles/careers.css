@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 0;
+  padding: clamp(60px, 8vh, 100px) clamp(24px, 5vw, 64px);
   background-color: #030304;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
@@ -44,6 +44,8 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   align-items: center;
@@ -214,6 +216,7 @@
   padding: 6px 8px 6px 22px;
   max-width: 480px;
   width: 100%;
+  margin-bottom: 24px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
   box-sizing: border-box;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
@@ -328,13 +331,13 @@
   .career-hero-section {
     padding-top: 100px !important;
     padding-bottom: 40px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
     overflow: visible !important;
   }
 
   .career-hero-container {
-    padding: 0 8px;
+    padding: 0;
     grid-template-columns: 1fr;
     gap: 32px;
   }
@@ -348,6 +351,7 @@
     flex-wrap: wrap;
     gap: 8px;
     border-radius: 16px;
+    margin-bottom: 24px !important;
   }
 
   .search-pill-divider {
@@ -363,6 +367,8 @@
   .career-hero-ctas {
     flex-direction: column;
     width: 100%;
+    gap: 14px !important;
+    margin-top: 4px !important;
   }
 
   .btn-career-primary,
