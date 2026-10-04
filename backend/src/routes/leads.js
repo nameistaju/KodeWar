@@ -83,4 +83,26 @@ router.post('/careers', async (req, res) => {
   }
 });
 
+// --------------------------------------------------
+// GET /api/leads
+// Fetch all submitted leads (Digital Marketing + Careers)
+// --------------------------------------------------
+router.get('/', async (req, res) => {
+  try {
+    const leads = await db.get('leads') || [];
+    return res.json({
+      success: true,
+      count: leads.length,
+      leads: leads.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
+    });
+  } catch (err) {
+    console.error('Fetch leads error:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch leads.',
+    });
+  }
+});
+
 export default router;
+
