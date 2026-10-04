@@ -128,6 +128,8 @@ export default function Hero() {
                     src="/logos/ministry-of-labour-and-employment-logo.webp"
                     alt="Ministry of Labour & Employment"
                     title="Ministry of Labour & Employment"
+                    width="108"
+                    height="36"
                   />
                 </div>
                 <div className="hero-proud-logo-item">
@@ -135,6 +137,8 @@ export default function Hero() {
                     src="/logos/imgi_89_image.webp"
                     alt="AICTE"
                     title="AICTE"
+                    width="108"
+                    height="36"
                   />
                 </div>
                 <div className="hero-proud-logo-item">
@@ -142,6 +146,8 @@ export default function Hero() {
                     src="/logos/DPIIT-header-new.webp"
                     alt="DPIIT #startupindia"
                     title="DPIIT #startupindia"
+                    width="108"
+                    height="36"
                   />
                 </div>
               </div>

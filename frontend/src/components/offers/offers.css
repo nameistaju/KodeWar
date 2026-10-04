@@ -245,6 +245,7 @@
 .promotion-banner-static {
   display: block;
   width: 100%;
+  min-height: 240px;
   border-radius: 8px;
   overflow: hidden;
   background: #0b0b0d;

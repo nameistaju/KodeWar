@@ -84,13 +84,16 @@
 .hero-headline-container {
   position: relative;
   width: 100%;
+  min-height: clamp(84px, 10vw, 154px);
   margin-bottom: clamp(14px, 2.2vh, 24px);
+  contain: layout;
 }
 
 .hero-headline-stack {
   display: grid;
   grid-template-areas: "stack";
   align-items: center;
+  min-height: clamp(84px, 10vw, 154px);
 }
 
 .hero-headline-layer {

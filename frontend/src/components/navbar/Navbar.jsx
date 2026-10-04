@@ -51,6 +51,8 @@ export default function Navbar() {
           <img
             src="/whitelogo_notext.png"
             alt="Kodewar Logo"
+            width="36"
+            height="32"
           />
           <span>KODEWAR</span>
         </Link>
