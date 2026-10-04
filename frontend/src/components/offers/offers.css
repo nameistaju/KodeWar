@@ -1,0 +1,282 @@
+/* ==================================================
+   KODEWAR — PROMOTIONAL OFFER SYSTEM & ADS STYLES
+   ================================================== */
+
+/* --------------------------------------------------
+   1. PROMOTIONAL ANNOUNCEMENT STRIP (Below Hero)
+   -------------------------------------------------- */
+.offer-ticker-strip {
+  position: relative;
+  width: 100%;
+  background: #08080a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  z-index: 10;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.offer-ticker-strip:hover .offer-ticker-track {
+  animation-play-state: paused;
+}
+
+.offer-ticker-track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: offerTicker 42s linear infinite;
+  padding: 10px 0;
+}
+
+.offer-ticker-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #d1d5db;
+  text-transform: uppercase;
+}
+
+.offer-ticker-bullet {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+  transform: translateY(-1px);
+}
+
+.offer-ticker-badge {
+  color: #ffffff;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  letter-spacing: 0.08em;
+}
+
+.offer-ticker-arrow {
+  color: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.offer-ticker-strip:hover .offer-ticker-arrow {
+  transform: translateX(4px);
+}
+
+@keyframes offerTicker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .offer-ticker-track {
+    animation: none;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+  }
+  .offer-ticker-track .offer-ticker-segment:nth-child(n+2) {
+    display: none;
+  }
+}
+
+
+/* --------------------------------------------------
+   2. PROMOTIONAL POSTER VIEWER (OfferPopup)
+   -------------------------------------------------- */
+.offer-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(4, 4, 6, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: offerBackdropFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes offerBackdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.offer-popup-modal {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: min(90vw, 860px);
+  max-height: min(88vh, 88svh);
+  border-radius: 6px;
+  overflow: visible;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.95);
+  transform: translateY(12px) scale(0.97);
+  opacity: 0;
+  animation: offerModalEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes offerModalEntrance {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Small Close "X" Button in top-right corner */
+.offer-popup-close-btn {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 30;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0d0d11;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  padding: 0;
+}
+
+.offer-popup-close-btn:hover,
+.offer-popup-close-btn:focus-visible {
+  background: #ffffff;
+  color: #050505;
+  border-color: #ffffff;
+  transform: scale(1.1);
+  outline: none;
+}
+
+.offer-popup-close-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Pure Uploaded Poster:
+   Exact aspect ratio, no cropping, no stretching, no distortion */
+.offer-poster-img {
+  width: auto;
+  height: auto;
+  max-width: min(90vw, 860px);
+  max-height: min(88vh, 88svh);
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+  user-select: none;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .offer-popup-backdrop {
+    padding: 16px;
+  }
+
+  .offer-popup-modal {
+    max-width: calc(100vw - 32px);
+    max-height: calc(100svh - 32px);
+  }
+
+  .offer-poster-img {
+    max-width: calc(100vw - 32px);
+    max-height: calc(100svh - 32px);
+  }
+
+  .offer-popup-close-btn {
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.offer-popup-link {
+  display: block;
+  text-decoration: none;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+}
+
+
+/* --------------------------------------------------
+   3. HOMEPAGE PROMOTIONAL BANNER
+   -------------------------------------------------- */
+.promotion-banner-section {
+  position: relative;
+  width: 100%;
+  padding: 48px 24px;
+  background: #050505;
+  box-sizing: border-box;
+}
+
+.promotion-banner-inner {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.promotion-banner-link,
+.promotion-banner-static {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0b0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+}
+
+.promotion-banner-link:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+}
+
+.promotion-banner-poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+  margin: 0 auto;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .promotion-banner-section {
+    padding: 32px 16px;
+  }
+
+  .promotion-banner-poster {
+    max-height: 340px;
+  }
+}
+

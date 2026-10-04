@@ -1,0 +1,611 @@
+/* ==================================================
+   KODEWAR MONOCHROME ARCHITECTURAL FORM SYSTEM
+   Theme: Minimalist Monochrome (#000000, #09090C, #111218, #FFFFFF)
+   Accents: Blacks, Whites, Greys
+   Geometry: Sharp, Clean Borders, High Contrast
+   ================================================== */
+
+.kw-form-section {
+  position: relative;
+  background-color: #000000;
+  padding: clamp(4rem, 7vw, 7rem) 1.25rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kw-form-container {
+  position: relative;
+  z-index: 10;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header */
+.kw-form-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3rem auto;
+}
+
+.kw-form-eyebrow {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+  margin-bottom: 0.85rem;
+}
+
+.kw-form-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+}
+
+.kw-form-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #8A8A8A;
+  margin: 0 auto;
+}
+
+/* Main Form Container - Clean Card Surface */
+.kw-card-surface {
+  position: relative;
+  z-index: 2;
+  background: #09090C;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  padding: clamp(2rem, 4vw, 3.25rem);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+
+/* Desktop Horizontal Step Wizard Header */
+.kw-horizontal-step-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding: 0 0.5rem;
+}
+
+.kw-step-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.kw-step-circle {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: #09090C;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  z-index: 3;
+}
+
+.kw-step-circle.active {
+  border-color: #FFFFFF;
+  background: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.kw-step-circle.completed {
+  border-color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.kw-step-connector {
+  position: absolute;
+  top: 1.125rem;
+  left: calc(50% + 1.125rem);
+  right: calc(-50% + 1.125rem);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  transition: background 0.25s ease;
+}
+
+.kw-step-connector.completed {
+  background: #FFFFFF;
+}
+
+.kw-step-node-label {
+  margin-top: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #52525B;
+  text-align: center;
+  transition: color 0.25s ease;
+}
+
+.kw-step-node.active .kw-step-node-label {
+  color: #FFFFFF;
+}
+
+.kw-step-node.completed .kw-step-node-label {
+  color: #A1A1AA;
+}
+
+/* Mobile Step Summary Component */
+.kw-mobile-step-summary {
+  display: none;
+  margin-bottom: 1.5rem;
+}
+
+.kw-step-tracker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.kw-step-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.12em;
+}
+
+.kw-step-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #71717A;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kw-progress-line-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.kw-progress-line-fill {
+  height: 100%;
+  background: #FFFFFF;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Step Content Transitions */
+.kw-step-content {
+  animation: kwStepEnter 0.3s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+@keyframes kwStepEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Large Question Typography */
+.kw-step-heading {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.kw-step-desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #8A8A8A;
+  margin: 0 0 1.75rem 0;
+}
+
+/* Form Fields */
+.kw-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.kw-grid-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.kw-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.kw-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #A1A1AA;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kw-label-optional {
+  color: #52525B;
+  font-size: 0.6875rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kw-input {
+  width: 100%;
+  height: 3rem;
+  background: #060609;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0;
+  padding: 0 1rem;
+  font-size: 0.9375rem;
+  color: #FFFFFF;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.kw-input:focus {
+  outline: none;
+  border-color: #FFFFFF;
+  background: #111218;
+  box-shadow: 0 0 0 1px #FFFFFF, 0 4px 16px rgba(255, 255, 255, 0.08);
+}
+
+.kw-input::placeholder {
+  color: #555560;
+}
+
+.kw-input.error {
+  border-color: #A1A1AA;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.kw-textarea {
+  width: 100%;
+  min-height: 120px;
+  background: #060609;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0;
+  padding: 0.875rem 1rem;
+  font-size: 0.9375rem;
+  color: #FFFFFF;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kw-textarea:focus {
+  outline: none;
+  border-color: #FFFFFF;
+  background: #111218;
+  box-shadow: 0 0 0 1px #FFFFFF, 0 4px 16px rgba(255, 255, 255, 0.08);
+}
+
+.kw-textarea::placeholder {
+  color: #555560;
+}
+
+.kw-field-error {
+  color: #E5E7EB;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+/* Selectable Rectangular Tiles - High Contrast Monochrome */
+.kw-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.kw-tile {
+  appearance: none;
+  background: #060609;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0;
+  padding: 0.875rem 1rem;
+  color: #A1A1AA;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+}
+
+.kw-tile:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+  background: #111218;
+}
+
+.kw-tile.active {
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #000000;
+  font-weight: 700;
+}
+
+.kw-tile-indicator {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 0;
+  font-size: 11px;
+  color: transparent;
+  transition: all 0.2s ease;
+}
+
+.kw-tile.active .kw-tile-indicator {
+  background: #000000;
+  border-color: #000000;
+  color: #FFFFFF;
+  font-weight: 900;
+}
+
+/* File Upload Box */
+.kw-file-drop {
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  background: #060609;
+  border-radius: 0;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.kw-file-drop:hover {
+  border-color: #FFFFFF;
+  background: #111218;
+}
+
+.kw-file-drop.has-file {
+  border-style: solid;
+  border-color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.kw-file-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.kw-file-hint {
+  font-size: 0.75rem;
+  color: #71717A;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kw-file-remove {
+  background: transparent;
+  border: none;
+  color: #A1A1AA;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.kw-file-remove:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+/* Form Action Buttons */
+.kw-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kw-btn-back {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #A1A1AA;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.2s ease;
+  border-radius: 0;
+}
+
+.kw-btn-back:hover {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.kw-btn-primary {
+  background: #FFFFFF;
+  color: #000000;
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid #FFFFFF;
+  border-radius: 0;
+  padding: 0.875rem 2.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: all 0.25s ease;
+  margin-left: auto;
+}
+
+.kw-btn-primary:hover:not(:disabled) {
+  background: #E5E7EB;
+  border-color: #E5E7EB;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+.kw-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Success Card */
+.kw-success-card {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  animation: kwStepEnter 0.4s ease forwards;
+}
+
+.kw-success-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.15em;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.4rem 1.15rem;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  border-radius: 0;
+  text-transform: uppercase;
+}
+
+.kw-success-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.kw-success-text {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #8A8A8A;
+  max-width: 520px;
+  margin: 0 auto 2.25rem auto;
+}
+
+.kw-btn-reset {
+  background: #000000;
+  border: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0;
+  padding: 0.875rem 2rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: all 0.25s ease;
+}
+
+.kw-btn-reset:hover {
+  background: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .kw-horizontal-step-bar {
+    display: none;
+  }
+  .kw-mobile-step-summary {
+    display: block;
+  }
+  .kw-card-surface {
+    padding: 1.5rem 1.25rem;
+  }
+  .kw-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .kw-tiles-grid {
+    grid-template-columns: 1fr;
+  }
+  .kw-form-actions {
+    flex-direction: column-reverse;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .kw-btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+  .kw-btn-back {
+    justify-content: center;
+  }
+}

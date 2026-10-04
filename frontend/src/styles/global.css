@@ -1,0 +1,314 @@
+:root {
+  --jet: #07070a;
+  --graphite: #131316;
+  --dark-gray: #1c1c22;
+  --chrome-1: #e8e9ec;
+  --chrome-2: #9a9ca3;
+  --pure-white: #f6f6f7;
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-brd: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.08);
+  --ease: cubic-bezier(.16, .84, .44, 1);
+  --accent-blue: #ffffff;
+  --accent-blue-subtle: rgba(255, 255, 255, 0.08);
+  --accent-blue-border: rgba(255, 255, 255, 0.22);
+  --accent-blue-glow: 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--jet);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--jet);
+  color: var(--chrome-1);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--pure-white);
+  color: var(--jet);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.disp {
+  font-family: 'Sora', sans-serif;
+}
+
+/* ===== CURSOR (Floating Logo Follower with favicon.svg) ===== */
+.custom-cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.custom-cursor-favicon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 6px rgba(223, 255, 0, 0.45)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+  transition: transform 0.2s ease;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-follower {
+    display: none !important;
+  }
+}
+
+/* ===== KODEWAR LOGO LOADER (STARTER) ===== */
+.logo-loader-stage {
+  --bg: #050506;
+  --ink: #f6f7fb;
+  --glow: #ffffff;
+  --sw: 3.2;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(4vmin, env(safe-area-inset-top, 0px)) max(4vmin, env(safe-area-inset-right, 0px)) max(4vmin, env(safe-area-inset-bottom, 0px)) max(4vmin, env(safe-area-inset-left, 0px));
+  overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  cursor: pointer;
+}
+
+.logo-loader-stage.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.logo-loader-stage svg {
+  display: block;
+  width: min(84vw, 420px);
+  height: auto;
+  max-height: 52vh;
+  overflow: visible;
+}
+
+@media (max-width: 700px) {
+  .logo-loader-stage svg {
+    width: min(80vw, 320px);
+  }
+  .logo-loader-stage { --sw: 4.2; }
+}
+
+@media (max-width: 420px) {
+  .logo-loader-stage svg {
+    width: min(80vw, 250px);
+  }
+  .logo-loader-stage { --sw: 5; }
+}
+
+.logo-loader-stage .logo {
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.logo-loader-stage .logo.play {
+  animation: logoGlow 1s ease-in-out 3.6s both;
+}
+
+.logo-loader-stage .p {
+  fill: var(--ink);
+  fill-opacity: 0;
+  stroke: var(--ink);
+  stroke-width: var(--sw);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+
+.logo-loader-stage .logo.play .p {
+  animation: logoDraw 1.5s cubic-bezier(.65, 0, .35, 1) var(--d) both,
+             logoFill .9s ease calc(var(--d) + 1.15s) both,
+             logoThin .6s ease calc(var(--d) + 1.6s) both;
+}
+
+@keyframes logoDraw {
+  0% { opacity: 1; stroke-dashoffset: 1; }
+  100% { opacity: 1; stroke-dashoffset: 0; }
+}
+
+@keyframes logoFill {
+  from { fill-opacity: 0; }
+  to { fill-opacity: 1; }
+}
+
+@keyframes logoThin {
+  to { stroke-width: 0; }
+}
+
+@keyframes logoGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+  50% { filter: drop-shadow(0 0 18px var(--glow)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-loader-stage .logo.play .p {
+    animation-duration: .01s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* ===== NOISE / GRAIN ===== */
+#grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 500;
+  opacity: .035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== BASE UTILITIES ===== */
+section {
+  position: relative;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .22em;
+  color: var(--chrome-2);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--chrome-2);
+}
+
+.btn-primary {
+  background: var(--pure-white);
+  color: var(--jet);
+  padding: 16px 34px;
+  border-radius: 100px;
+  font-size: 13px;
+  letter-spacing: .06em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: scale(1.045);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, .15);
+}
+
+.btn-ghost {
+  font-size: 13px;
+  letter-spacing: .05em;
+  color: var(--chrome-2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-ghost .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6bffb0;
+  box-shadow: 0 0 12px #6bffb0;
+}
+
+.btn-secondary-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--chrome-1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all .35s var(--ease);
+  letter-spacing: .02em;
+}
+
+.btn-secondary-link:hover {
+  color: var(--pure-white);
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: .08em;
+  color: var(--chrome-1);
+  padding: 12px 24px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .3s var(--ease);
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  border-color: var(--pure-white);
+  color: var(--pure-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+

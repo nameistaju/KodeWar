@@ -1,0 +1,383 @@
+/* ==================================================
+   KODEWAR SERVICES PAGE STYLESHEET
+   Theme: Strict Minimalist Monochrome (#000000, #050507, #09090C, #FFFFFF)
+   Accents: Blacks, Whites, Greys
+   Inspired by Reference: Clean Vertical Rows, Syne Typography, Dual Action Cards
+   ================================================== */
+
+.services-page-container {
+  background-color: #000000;
+  color: #FFFFFF;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 1. HERO SECTION */
+.services-hero {
+  position: relative;
+  background-color: #050507;
+  padding: clamp(6rem, 10vw, 10rem) 1.5rem clamp(4rem, 6vw, 6rem) 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.services-hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+  margin-bottom: 1rem;
+}
+
+.services-hero-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin: 0 0 2.5rem 0;
+}
+
+.services-scroll-stem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #71717A;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.services-scroll-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, #A1A1AA, rgba(255, 255, 255, 0.1));
+}
+
+/* 2. SUB-HEADER / INTRO SECTION */
+.services-intro-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(4rem, 7vw, 6rem) 1.5rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.services-intro-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 0 0 1.25rem 0;
+}
+
+.services-underline-accent {
+  position: relative;
+  display: inline-block;
+}
+
+.services-underline-accent::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.services-intro-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+  margin-bottom: 1.25rem;
+}
+
+.services-intro-desc {
+  max-width: 780px;
+  margin: 0 auto;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 1.7;
+  color: #8A8A8A;
+}
+
+/* 3. VERTICAL SERVICES LIST */
+.services-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem clamp(5rem, 8vw, 8rem) 1.5rem;
+}
+
+.services-row-item {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 1.3fr;
+  gap: 2rem;
+  align-items: start;
+  padding: clamp(2.5rem, 4vw, 3.5rem) 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.services-row-item:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.services-row-item:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.services-item-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #71717A;
+  padding-top: 0.35rem;
+}
+
+.services-row-item:hover .services-item-index {
+  color: #FFFFFF;
+}
+
+.services-item-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.services-item-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.services-row-item:hover .services-item-title {
+  color: #FFFFFF;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.services-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.services-item-description {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #8A8A8A;
+  margin: 0;
+}
+
+.services-deliverables-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.services-deliverable-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.725rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+  background-color: #09090C;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.35rem 0.75rem;
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+
+.services-row-item:hover .services-deliverable-tag {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+}
+
+/* 4. MONOCHROME TESTIMONIAL BANNER */
+.services-quote-banner {
+  background-color: #09090C;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  text-align: center;
+}
+
+.services-quote-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.services-quote-text {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(1.3rem, 2.8vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin: 0 0 2rem 0;
+}
+
+.services-quote-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.services-author-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.services-author-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #71717A;
+}
+
+/* 5. DUAL CTA BLOCKS SECTION */
+.services-cta-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 6rem) 1.5rem clamp(5rem, 9vw, 8rem) 1.5rem;
+}
+
+.services-cta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.services-cta-card {
+  background-color: #09090C;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: clamp(3rem, 5vw, 4.5rem) 2rem;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.services-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.06), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.services-cta-card:hover {
+  border-color: #FFFFFF;
+  background-color: #111218;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.services-cta-card:hover::before {
+  opacity: 1;
+}
+
+.services-cta-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #71717A;
+  margin-bottom: 1rem;
+  transition: color 0.25s ease;
+}
+
+.services-cta-card:hover .services-cta-eyebrow {
+  color: #A1A1AA;
+}
+
+.services-cta-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.services-cta-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.services-cta-card:hover .services-cta-arrow {
+  transform: translateX(6px);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 960px) {
+  .services-row-item {
+    grid-template-columns: 3.5rem 1fr;
+    gap: 1.25rem;
+  }
+  .services-item-body {
+    grid-column: 1 / -1;
+    padding-left: 3.5rem;
+  }
+  .services-cta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .services-row-item {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 2rem 0.5rem;
+  }
+  .services-item-index {
+    padding-top: 0;
+  }
+  .services-item-body {
+    padding-left: 0;
+  }
+}

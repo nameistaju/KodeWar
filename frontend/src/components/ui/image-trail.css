@@ -1,0 +1,47 @@
+/* ==================================================
+   IMAGE TRAIL COMPONENT STYLES
+   ================================================== */
+
+.image-trail-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.image-trail-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+  border: none !important; /* Strictly no borders */
+  outline: none !important;
+  width: 220px;
+  height: 147px;
+}
+
+@media (max-width: 640px) {
+  .image-trail-item {
+    width: 170px;
+    height: 113px;
+  }
+}
+
+.image-trail-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  border: none !important;
+  border-radius: 14px;
+}

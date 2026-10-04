@@ -1,0 +1,206 @@
+/* ============================================================
+   Background Paths Component Styles
+   ============================================================ */
+
+.bg-paths-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #030304;
+  padding: clamp(80px, 14vh, 160px) clamp(20px, 4vw, 48px);
+}
+
+/* Background Paths SVG container */
+.bg-paths-svg-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.bg-paths-svg {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Central subtle ambient glow */
+.bg-paths-ambient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(400px, 60vw, 900px);
+  height: clamp(350px, 50vh, 700px);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 214, 0, 0.02) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Content Container */
+.bg-paths-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Eyebrow / Trajectory Badge */
+.bg-paths-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #FFD600;
+  margin-bottom: 24px;
+  padding: 6px 16px;
+  background: rgba(255, 214, 0, 0.05);
+  border: 1px solid rgba(255, 214, 0, 0.2);
+  border-radius: 2px;
+}
+
+/* Heading */
+.bg-paths-title {
+  font-family: 'Sora', 'Syne', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 0 0 28px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: clamp(12px, 1.8vw, 24px);
+  row-gap: 8px;
+}
+
+.bg-paths-word {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.bg-paths-letter {
+  display: inline-block;
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.72) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.12);
+}
+
+/* Subtitle */
+.bg-paths-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(15px, 1.25vw, 19px);
+  line-height: 1.65;
+  color: #8E929E;
+  max-width: 620px;
+  margin: 0 auto clamp(32px, 4vh, 44px) auto;
+}
+
+/* Action Button Wrapper with Frosted Glass Border */
+.bg-paths-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-paths-btn-wrap {
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
+  padding: 1px;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.bg-paths-btn-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px -8px rgba(255, 255, 255, 0.12);
+}
+
+.bg-paths-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 36px;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.bg-paths-btn-primary:hover {
+  background: #0a0a0c;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.bg-paths-btn-arrow {
+  margin-left: 10px;
+  opacity: 0.75;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  display: inline-block;
+}
+
+.bg-paths-btn-wrap:hover .bg-paths-btn-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* Secondary Action Button */
+.bg-paths-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #9A9CA3;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.bg-paths-btn-secondary:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}

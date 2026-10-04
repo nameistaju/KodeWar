@@ -1,0 +1,472 @@
+/* ==================================================
+   KODEWAR — CAREER AUTH & CANDIDATE PORTAL STYLES
+   Visual Language: Dark Luxury #050505, #0B0B0D, #F5F5F5, #8A8A8A, Accent Blue
+   ================================================== */
+
+.career-auth-page {
+  position: relative;
+  min-height: calc(100vh - 72px);
+  background-color: #050505;
+  color: #F5F5F5;
+  padding: 84px 24px 36px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.career-auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: #0B0B0D;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: clamp(28px, 4vw, 40px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  box-sizing: border-box;
+}
+
+/* Horizontal Single-Glance Desktop Layout */
+.career-auth-card.horizontal-layout {
+  max-width: 960px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  padding: 38px 48px;
+}
+
+.career-auth-hero-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.career-auth-hero-content {
+  margin-top: 10px;
+}
+
+.career-auth-form-pane {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Interactive Eye-Tracking Cartoon Face (No border, No bg, pure watercolor cloud) */
+.cloud-watch-face-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4px;
+  background: transparent;
+}
+
+.cloud-watch-face-container {
+  position: relative;
+  width: 270px;
+  height: 180px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  user-select: none;
+}
+
+.cloud-watch-face-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+  border: none;
+}
+
+.cloud-watch-eye {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud-watch-pupil {
+  pointer-events: none;
+}
+
+.career-auth-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #8A8A8A;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.career-auth-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(24px, 3.2vw, 30px);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.career-auth-desc {
+  font-size: 14px;
+  color: #8A8A8A;
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
+
+/* Google OAuth Button */
+.btn-google-auth {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #14151C;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  padding: 12px 18px;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-google-auth:hover {
+  background: #1E202B;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.btn-google-auth svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 24px 0;
+  color: #6B7280;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-divider span {
+  padding: 0 14px;
+}
+
+/* Form inputs */
+.auth-form-group {
+  margin-bottom: 20px;
+}
+
+.auth-form-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #D1D5DB;
+  margin-bottom: 8px;
+}
+
+.auth-form-input {
+  width: 100%;
+  background: #111217;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  padding: 11px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-form-input:focus {
+  border-color: #0066FF;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.2);
+}
+
+/* Password Input Wrapper & Eye Toggle Button */
+.auth-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-wrapper .auth-form-input {
+  padding-right: 44px;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #8A8A8A;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.auth-error-banner {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 4px;
+  color: #F87171;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.auth-footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  font-size: 13px;
+  color: #8A8A8A;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.auth-footer-links a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.auth-footer-links a:hover {
+  color: #0066FF;
+}
+
+/* --------------------------------------------------
+   CANDIDATE DASHBOARD
+   -------------------------------------------------- */
+.candidate-dash-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: #050505;
+  color: #F5F5F5;
+  padding: 120px 24px 80px;
+  box-sizing: border-box;
+}
+
+.candidate-dash-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.dash-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dash-header-title h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.dash-header-title p {
+  color: #8A8A8A;
+  font-size: 14px;
+  margin: 0;
+}
+
+.dash-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.dash-metric-card {
+  background: #0B0B0D;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dash-metric-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #8A8A8A;
+  text-transform: uppercase;
+}
+
+.dash-metric-val {
+  font-size: 26px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #10B981;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* Application Status Badges */
+.app-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.app-status-badge.APPLIED {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.app-status-badge.UNDER_REVIEW {
+  background: rgba(245, 158, 11, 0.12);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.app-status-badge.SHORTLISTED {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.app-status-badge.INTERVIEW {
+  background: rgba(139, 92, 246, 0.14);
+  color: #C084FC;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+}
+
+.app-status-badge.SELECTED {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34D399;
+  border: 1px solid #10B981;
+}
+
+.app-status-badge.REJECTED {
+  background: rgba(239, 68, 68, 0.12);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Applications Table / Cards */
+.dash-app-card {
+  background: #0B0B0D;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.dash-app-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.dash-app-main h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+}
+
+.dash-app-meta {
+  font-size: 12px;
+  color: #8A8A8A;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Responsive Breakpoints for Career Auth */
+@media (max-width: 920px) {
+  .career-auth-page {
+    padding: 88px 16px 40px;
+    min-height: auto;
+  }
+
+  .career-auth-card.horizontal-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 24px;
+    max-width: 480px;
+  }
+
+  .cloud-watch-face-container {
+    width: 240px;
+    height: 160px;
+  }
+
+  .cloud-watch-eye {
+    transform: scale(0.9);
+  }
+}

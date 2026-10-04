@@ -1,0 +1,924 @@
+/* ==================================================
+   KODEWAR — ADMIN PROMOTIONS & OFFERS MANAGEMENT
+   Dark luxury styling matching KODEWAR design system
+   ================================================== */
+
+.admin-promo-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: #050505;
+  color: #f5f5f5;
+  padding: 120px 24px 80px;
+  box-sizing: border-box;
+}
+
+.admin-promo-page-shell {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.admin-promo-container {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------
+   1. BREADCRUMBS & HEADER
+   -------------------------------------------------- */
+.admin-promo-header {
+  margin-bottom: 36px;
+}
+
+.admin-promo-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #8a8a8a;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.admin-promo-breadcrumbs a {
+  color: #8a8a8a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.admin-promo-breadcrumbs a:hover {
+  color: #ffffff;
+}
+
+.admin-promo-breadcrumbs span.sep {
+  opacity: 0.4;
+}
+
+.admin-promo-breadcrumbs span.current {
+  color: #0066ff;
+  font-weight: 600;
+}
+
+.admin-promo-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-promo-title-wrap h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+
+.admin-promo-title-wrap p {
+  color: #8a8a8a;
+  font-size: 14px;
+  margin: 0;
+  max-width: 600px;
+}
+
+.admin-promo-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-admin-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #050505;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-admin-primary:hover {
+  background: #0066ff;
+  color: #ffffff;
+  border-color: #0066ff;
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.35);
+}
+
+.btn-admin-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0b0b0d;
+  color: #d1d5db;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 18px;
+  border-radius: 4px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-admin-secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.btn-admin-danger {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+.btn-admin-danger:hover {
+  background: rgba(248, 113, 113, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* --------------------------------------------------
+   2. METRICS & STATUS BAR
+   -------------------------------------------------- */
+.admin-promo-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.admin-promo-stat-card {
+  background: #0b0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-promo-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #8a8a8a;
+  text-transform: uppercase;
+}
+
+.admin-promo-stat-val {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-promo-stat-desc {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: promoPulse 2s infinite ease-in-out;
+}
+
+@keyframes promoPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* --------------------------------------------------
+   3. FILTER TABS & SEARCH
+   -------------------------------------------------- */
+.admin-promo-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 16px;
+}
+
+.admin-promo-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-promo-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #8a8a8a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-promo-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-promo-tab.active {
+  color: #ffffff;
+  background: #141419;
+  border-color: rgba(255, 255, 255, 0.16);
+  font-weight: 600;
+}
+
+.admin-promo-tab-count {
+  margin-left: 6px;
+  opacity: 0.6;
+  font-size: 10px;
+}
+
+/* --------------------------------------------------
+   4. PROMOTIONS CARDS GRID
+   -------------------------------------------------- */
+.admin-promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.admin-promo-card {
+  background: #0b0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.admin-promo-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.admin-promo-card.disabled-card {
+  opacity: 0.65;
+}
+
+.admin-promo-card-thumb-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.admin-promo-card-thumb {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.admin-promo-card-thumb-wrap:hover .admin-promo-card-thumb {
+  transform: scale(1.04);
+}
+
+.admin-promo-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  gap: 6px;
+}
+
+.admin-promo-card-thumb-wrap:hover .admin-promo-thumb-overlay {
+  opacity: 1;
+}
+
+.admin-promo-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.admin-promo-card-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.admin-promo-card-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Status Badges */
+.promo-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.promo-status-badge.ACTIVE {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.promo-status-badge.SCHEDULED {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.promo-status-badge.EXPIRED {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.promo-status-badge.DISABLED {
+  background: rgba(156, 163, 175, 0.12);
+  color: #9ca3af;
+  border: 1px solid rgba(156, 163, 175, 0.25);
+}
+
+.promo-status-badge.DRAFT {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px dashed rgba(245, 158, 11, 0.35);
+}
+
+/* Surfaces Badges */
+.admin-promo-surfaces {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.promo-surface-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.promo-surface-pill.banner {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.promo-surface-pill.popup {
+  background: rgba(0, 102, 255, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(0, 102, 255, 0.3);
+}
+
+.admin-promo-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #8a8a8a;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-promo-meta-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-promo-meta-item span.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.admin-promo-meta-item span.val {
+  color: #d1d5db;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+/* Card Bottom Controls */
+.admin-promo-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+.admin-promo-switch-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #8a8a8a;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #27272a;
+  transition: 0.25s;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #0066ff;
+  border-color: #0066ff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.admin-promo-card-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-icon-admin {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-icon-admin:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.btn-icon-admin.danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Empty State */
+.admin-promo-empty {
+  text-align: center;
+  padding: 64px 24px;
+  background: #0b0b0d;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+.admin-promo-empty h3 {
+  font-size: 20px;
+  color: #ffffff;
+  margin: 12px 0 6px;
+}
+
+.admin-promo-empty p {
+  color: #8a8a8a;
+  font-size: 14px;
+  max-width: 440px;
+  margin: 0 auto 24px;
+}
+
+/* --------------------------------------------------
+   5. FORM STYLING (/admin/promotions/new & edit)
+   -------------------------------------------------- */
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-form-card {
+  background: #0b0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.admin-form-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-form-section-desc {
+  font-size: 13px;
+  color: #8a8a8a;
+  margin: 0 0 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #d1d5db;
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  background: #121217;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.2);
+}
+
+.form-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Checkbox and toggle tiles */
+.surface-tiles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.surface-tile {
+  background: #121217;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.surface-tile:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: #17171e;
+}
+
+.surface-tile.active {
+  background: rgba(0, 102, 255, 0.08);
+  border-color: #0066ff;
+}
+
+.surface-tile input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: #0066ff;
+}
+
+.surface-tile-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.surface-tile-desc {
+  font-size: 11px;
+  color: #8a8a8a;
+}
+
+/* Range Sliders */
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.slider-group input[type="range"] {
+  flex: 1;
+  accent-color: #0066ff;
+}
+
+.slider-val-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #17171e;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 44px;
+  text-align: center;
+}
+
+/* --------------------------------------------------
+   6. POSTER UPLOAD ZONE & PREVIEW
+   -------------------------------------------------- */
+.poster-dropzone {
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: #0f0f13;
+  padding: 36px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.poster-dropzone:hover,
+.poster-dropzone.dragover {
+  border-color: #0066ff;
+  background: rgba(0, 102, 255, 0.04);
+}
+
+.poster-dropzone-icon {
+  width: 48px;
+  height: 48px;
+  color: #60a5fa;
+  margin-bottom: 12px;
+}
+
+.poster-dropzone-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.poster-dropzone-desc {
+  font-size: 12px;
+  color: #8a8a8a;
+  max-width: 320px;
+  margin-bottom: 16px;
+}
+
+.preset-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.preset-pill {
+  background: #181820;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d1d5db;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-pill:hover {
+  background: #ffffff;
+  color: #050505;
+}
+
+/* Live Preview Card */
+.live-preview-box {
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 280px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.live-preview-img {
+  max-width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+
+.live-preview-modes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.live-preview-mode-btn {
+  background: #121217;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8a8a8a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.live-preview-mode-btn.active {
+  background: #ffffff;
+  color: #050505;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------
+   7. LIVE PREVIEW MODAL IN ADMIN
+   -------------------------------------------------- */
+.admin-preview-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.admin-preview-modal-container {
+  background: #0b0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-preview-modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-preview-modal-body {
+  padding: 24px;
+  background: #050505;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

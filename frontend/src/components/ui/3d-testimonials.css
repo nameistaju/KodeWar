@@ -1,0 +1,192 @@
+/* ============================================================
+   KODEWAR 3D Testimonials Marquee Grid - Full Width Isometric 3D Theme
+   ============================================================ */
+
+.testimonials-3d-stage {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  height: 660px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #030304;
+  perspective: 1200px;
+  box-sizing: border-box;
+}
+
+.testimonials-3d-grid {
+  display: flex;
+  gap: 24px;
+  width: 140vw;
+  min-width: 1600px;
+  justify-content: center;
+  align-items: center;
+  transform: rotateX(20deg) rotateZ(-12deg) skewX(8deg) scale(1.08);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Marquee Column Wrapper */
+.marquee-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: max-content;
+  will-change: transform;
+}
+
+.marquee-col-down {
+  animation: marquee-scroll-down var(--duration, 35s) linear infinite;
+}
+
+.marquee-col-up {
+  animation: marquee-scroll-up var(--duration, 32s) linear infinite;
+}
+
+.testimonials-3d-stage:hover .marquee-col {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll-down {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes marquee-scroll-up {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+/* Testimonial Card Styling */
+.testimonial-card-3d {
+  width: 285px;
+  min-height: 155px;
+  background-color: #0c0c0e;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
+  user-select: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.testimonial-card-3d:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background-color: #121216;
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
+}
+
+.testimonial-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.testimonial-card-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testimonial-card-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.testimonial-card-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.testimonial-card-category {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+}
+
+.testimonial-card-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.testimonial-card-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Gradient Fade Masks */
+.testimonials-mask-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, #030304 0%, rgba(3, 3, 4, 0.8) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.testimonials-mask-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to top, #030304 0%, rgba(3, 3, 4, 0.8) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .testimonials-3d-stage {
+    height: 520px;
+    perspective: 800px;
+  }
+  .testimonials-3d-grid {
+    width: 200vw;
+    transform: rotateX(15deg) rotateZ(-8deg) scale(0.95);
+    gap: 16px;
+  }
+  .testimonial-card-3d {
+    width: 240px;
+    padding: 16px;
+  }
+}

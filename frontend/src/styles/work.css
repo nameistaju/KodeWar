@@ -1,0 +1,310 @@
+/* ==================================================
+   KODEWAR WORK / PORTFOLIO PAGE STYLING
+   Full-page visual scroll matching reference
+   ================================================== */
+
+.work-page {
+  background-color: #050505;
+  color: #FFFFFF;
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------
+   1. FULLPAGE HERO SECTION (Loft Office Visual)
+   -------------------------------------------------- */
+.work-fullpage-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.work-hero-bg-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.work-hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.work-hero-dim-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 5, 0.5) 0%,
+    rgba(5, 5, 5, 0.35) 50%,
+    rgba(5, 5, 5, 0.75) 100%
+  );
+  pointer-events: none;
+}
+
+.work-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.work-hero-headline {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(40px, 6.8vw, 88px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+}
+
+.work-hero-scroll-btn {
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  opacity: 0.9;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.work-hero-scroll-btn:hover {
+  opacity: 1;
+  transform: translateY(3px);
+}
+
+/* --------------------------------------------------
+   2. FULL-WIDTH WORK SECTIONS (Each work image)
+   -------------------------------------------------- */
+.work-fullpage-slide {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050505;
+  overflow: hidden;
+}
+
+.work-slide-img {
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* --------------------------------------------------
+   3. CLOSING WORK CONTACT SECTION
+   -------------------------------------------------- */
+.work-fullpage-contact {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  background: #060608;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(80px, 14vh, 160px) clamp(24px, 5vw, 64px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.work-contact-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.work-contact-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #A1A1AA;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 18px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.work-contact-headline {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(40px, 6vw, 84px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+  margin: 0 0 20px 0;
+}
+
+.work-contact-email {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(20px, 2.5vw, 32px);
+  font-weight: 600;
+  margin: 0 0 40px 0;
+}
+
+.work-contact-email a {
+  color: #C7FF00;
+  text-decoration: none;
+  transition: opacity 0.25s ease;
+}
+
+.work-contact-email a:hover {
+  opacity: 0.85;
+}
+
+.work-contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.work-cta-primary-btn {
+  background: #FFFFFF;
+  color: #000000;
+  padding: 14px 34px;
+  border-radius: 100px;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.work-cta-primary-btn:hover {
+  background: #E5E7EB;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------
+   4. VERTICAL DOTS NAVIGATION (Right side sticky)
+   -------------------------------------------------- */
+.work-dots-nav {
+  position: fixed;
+  right: 24px;
+  left: auto !important;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: auto !important;
+  max-width: 32px;
+  background: rgba(10, 10, 12, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 12px 6px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+
+.work-dot-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  width: 16px;
+  height: 16px;
+}
+
+.work-dot-circle {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: all 0.25s ease;
+  display: block;
+}
+
+.work-dot-btn:hover .work-dot-circle {
+  background: rgba(255, 255, 255, 0.85);
+  transform: scale(1.2);
+}
+
+.work-dot-btn.active .work-dot-circle {
+  background: transparent;
+  border: 2px solid #FFFFFF;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: scale(1);
+}
+
+/* --------------------------------------------------
+   RESPONSIVE ADJUSTMENTS
+   -------------------------------------------------- */
+@media (max-width: 768px) {
+  .work-dots-nav {
+    right: 10px;
+    padding: 10px 6px;
+    gap: 8px;
+  }
+  .work-dot-btn {
+    width: 16px;
+    height: 16px;
+  }
+  .work-dot-circle {
+    width: 5px;
+    height: 5px;
+  }
+  .work-dot-btn.active .work-dot-circle {
+    width: 10px;
+    height: 10px;
+  }
+  .work-slide-img {
+    height: auto;
+    min-height: 50vh;
+  }
+  .work-fullpage-slide {
+    min-height: 50vh;
+  }
+}

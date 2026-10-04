@@ -1,0 +1,263 @@
+/* ServicesStack CSS - Custom styling for reference blue gradient & sticky white cards */
+
+.services-stack-section {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #090e29 0%, #0d1e56 20%, #1e40af 50%, #3b82f6 75%, #93c5fd 92%, #e0f2fe 100%);
+  color: #0f172a;
+  padding: 100px 0 120px 0;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .services-stack-section {
+    padding: 60px 0 80px 0;
+  }
+}
+
+/* Optional subtle noise/grid pattern */
+.services-stack-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.services-stack-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .services-stack-container {
+    padding: 0 16px;
+  }
+}
+
+.services-stack-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 1024px) {
+  .services-stack-grid {
+    grid-template-columns: 420px 1fr;
+    gap: 60px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .services-stack-grid {
+    grid-template-columns: 460px 1fr;
+    gap: 80px;
+  }
+}
+
+/* Left Sticky Title Box */
+.services-stack-left {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .services-stack-sticky-title {
+    position: sticky;
+    top: 140px;
+  }
+}
+
+.services-stack-subtitle {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.services-stack-main-heading {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 36px;
+  line-height: 1.15;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.02em;
+}
+
+.services-stack-active-heading {
+  font-weight: 800;
+  color: #ffffff;
+  display: block;
+  font-size: 42px;
+  margin-top: 6px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .services-stack-main-heading {
+    font-size: 44px;
+  }
+  .services-stack-active-heading {
+    font-size: 52px;
+  }
+}
+
+.services-stack-phase-indicator {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.services-stack-phase-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.services-stack-phase-pill.active {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  border-color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.services-stack-phase-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Right Stack Cards */
+.services-stack-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+@media (min-width: 1024px) {
+  .services-stack-cards-wrapper {
+    gap: 60px;
+  }
+}
+
+.services-stack-card {
+  background: #f8fafc;
+  border-radius: 28px;
+  padding: 36px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .services-stack-card {
+    padding: 48px;
+    border-radius: 32px;
+  }
+}
+
+/* Top Illustration Area */
+.services-stack-illustration-box {
+  width: 100%;
+  min-height: 180px;
+  max-height: 240px;
+  background: #edf2f7;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 36px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* Middle Text Paragraph */
+.services-stack-description {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 20px;
+  line-height: 1.5;
+  color: #1e293b;
+  font-weight: 450;
+  margin-bottom: 40px;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .services-stack-description {
+    font-size: 23px;
+    line-height: 1.48;
+  }
+}
+
+/* Bottom "WHAT THAT COVERS" Section */
+.services-stack-covers-header {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.services-stack-chips-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .services-stack-chips-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+.services-stack-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #dbeafe;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e3a8a;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.services-stack-chip:hover {
+  background: #bfdbfe;
+  transform: translateY(-1px);
+}
+
+.services-stack-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  flex-shrink: 0;
+}

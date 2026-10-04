@@ -1,0 +1,36 @@
+/* ==================================================
+   SHADCN SWITCH COMPONENT STYLES
+   ================================================== */
+.ui-switch-root {
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 44px;
+  height: 24px;
+  border-radius: 9999px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  border: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+
+.ui-switch-root[data-state='checked'] {
+  background-color: #ffffff;
+}
+
+.ui-switch-thumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 9999px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(0px);
+}
+
+.ui-switch-root[data-state='checked'] .ui-switch-thumb {
+  transform: translateX(20px);
+  background-color: #07070a;
+}

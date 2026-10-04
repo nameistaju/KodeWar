@@ -1,0 +1,311 @@
+/* HowWeWork - Fixed Left Sticky & Compact Stacked Cards CSS */
+
+.hww-section {
+  position: relative;
+  width: 100%;
+  background-color: #050505;
+  color: #ffffff;
+  padding: 80px 24px 120px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: visible !important;
+}
+
+@media (max-width: 768px) {
+  .hww-section {
+    padding: 50px 16px 60px;
+  }
+}
+
+.hww-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.8) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.hww-container {
+  max-width: 1340px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  overflow: visible !important;
+}
+
+.hww-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: stretch !important; /* CRITICAL: STRETCH SO LEFT COL SPANS FULL SECTION HEIGHT */
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) {
+  .hww-grid {
+    grid-template-columns: 380px 1fr;
+    gap: 50px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hww-grid {
+    grid-template-columns: 420px 1fr;
+    gap: 70px;
+  }
+}
+
+/* Left Sticky Column */
+.hww-left-col {
+  position: relative;
+  height: 100% !important; /* Spans full height of grid */
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) {
+  .hww-left-sticky {
+    position: sticky !important;
+    top: 130px !important;
+    z-index: 60 !important;
+    height: auto !important;
+    padding-bottom: 20px;
+  }
+}
+
+/* Sharp Tag (0px border radius) */
+.hww-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 0px !important;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: monospace;
+  font-size: 11px;
+  color: #ffffff;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.hww-tag-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 0px !important;
+  background: #ffffff;
+}
+
+.hww-heading-wrap {
+  min-height: 120px;
+  margin-bottom: 12px;
+}
+
+.hww-heading {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 32px;
+  line-height: 1.08;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .hww-heading {
+    font-size: 38px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hww-heading {
+    font-size: 44px;
+  }
+}
+
+.hww-description {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #a1a1aa;
+  max-width: 400px;
+  margin-bottom: 24px;
+  min-height: 44px;
+}
+
+/* Phase Navigation Pills on Left (Sharp 0px Radius) */
+.hww-phase-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hww-nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 0px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a1a1aa;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.hww-nav-pill.active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+}
+
+.hww-nav-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 0px !important;
+  background: #52525b;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.hww-nav-pill.active .hww-nav-dot {
+  background: #000000 !important;
+}
+
+/* Right Stacked Phase Cards Column */
+.hww-right-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: visible !important;
+}
+
+/* COMPACT STICKY STACKING CARD (COMPACT HEIGHT FOR FULL VIEWPORT VISIBILITY) */
+.hww-sticky-card {
+  position: sticky !important;
+  width: 100% !important;
+  background: #0d0d0d !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 0px !important;
+  padding: 24px !important;
+  margin-bottom: 200px !important; /* Stack gap */
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.95), 0 16px 40px rgba(0, 0, 0, 0.9) !important;
+  transition: border-color 0.3s ease !important;
+  box-sizing: border-box !important;
+}
+
+.hww-sticky-card:last-child {
+  margin-bottom: 0 !important;
+}
+
+.hww-sticky-card:hover {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+@media (max-width: 640px) {
+  .hww-sticky-card {
+    padding: 18px !important;
+    margin-bottom: 100px !important;
+  }
+}
+
+.hww-card-header {
+  margin-bottom: 16px;
+}
+
+.hww-card-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.hww-card-badge {
+  font-family: monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 0px !important;
+  background: #ffffff;
+  color: #000000;
+}
+
+.hww-card-num {
+  font-family: monospace;
+  font-size: 11px;
+  color: #71717a;
+  letter-spacing: 0.1em;
+}
+
+.hww-card-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+@media (min-width: 768px) {
+  .hww-card-title {
+    font-size: 22px;
+  }
+}
+
+.hww-card-desc {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #a1a1aa;
+}
+
+/* COMPACT SHARP IMAGE VIEWPORT CONTAINER (170px HEIGHT FOR PERFECT VISIBILITY) */
+.hww-image-box {
+  position: relative !important;
+  width: 100% !important;
+  height: 170px !important;
+  max-height: 180px !important;
+  border-radius: 0px !important;
+  overflow: hidden !important;
+  background: #050507 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  margin-top: 14px !important;
+}
+
+@media (min-width: 768px) {
+  .hww-image-box {
+    height: 190px !important;
+    max-height: 200px !important;
+  }
+}
+
+.hww-image-box img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 0px !important;
+  display: block !important;
+  transition: transform 0.5s ease !important;
+}
+
+.hww-sticky-card:hover .hww-image-box img {
+  transform: scale(1.02) !important;
+}
+
+.hww-image-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(13, 13, 13, 0.35) 100%) !important;
+  pointer-events: none !important;
+}

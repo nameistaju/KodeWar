@@ -1,0 +1,268 @@
+/* ============================================================
+   KODEWAR Footer - Monochrome Agency Theme Styles (Full-Width Edge-to-Edge)
+   ============================================================ */
+
+.footer-section-v5 {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background-color: #050505 !important;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 79px,
+    rgba(255, 255, 255, 0.025) 80px
+  ) !important;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  border-top: none !important;
+  font-family: 'Inter', -apple-system, sans-serif;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Layer 1: Outlined Wordmark */
+.footer-v5-stroke-text-wrap {
+  position: relative;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-top: clamp(60px, 10vh, 100px);
+  padding-bottom: 0;
+  z-index: 0;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+.footer-v5-stroke-text {
+  font-size: clamp(70px, 14vw, 220px);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+  line-height: 0.75;
+  user-select: none;
+  margin-top: 0 !important;
+  margin-bottom: -14px;
+  opacity: 0.25;
+  letter-spacing: 0.02em;
+  transition: opacity 0.5s ease;
+  font-family: 'JetBrains Mono', 'Sora', monospace;
+}
+
+.footer-v5-stroke-text:hover {
+  opacity: 0.4;
+}
+
+/* Layer 2: Main Footer Panel with Full-Width Grid Background */
+.footer-v5-panel {
+  position: relative;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background: transparent !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  z-index: 10;
+  margin: 0 !important;
+}
+
+/* Main Inner Centered Container */
+.footer-v5-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 64px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  .footer-v5-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 64px;
+  }
+}
+
+/* Left Brand Side */
+.footer-v5-brand {
+  display: flex;
+  flex-direction: column;
+  max-width: 440px;
+  width: 100%;
+}
+
+.footer-v5-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none !important;
+}
+
+.footer-v5-logo-img {
+  width: 40px !important;
+  height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
+  object-fit: contain !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+.footer-v5-logo-text {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.footer-v5-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+  margin-top: 16px;
+  margin-bottom: 0;
+  letter-spacing: -0.01em;
+}
+
+.footer-v5-social-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-v5-social-svg {
+  width: 220px !important;
+  height: 28px !important;
+  max-width: 220px !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+.footer-v5-copyright {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Right Navigation Side */
+.footer-v5-links-grid {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .footer-v5-links-grid {
+    width: auto;
+    gap: 72px;
+  }
+}
+
+.footer-v5-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 140px;
+}
+
+.footer-v5-links-col h3 {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.footer-v5-links-col ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-v5-links-col li {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.footer-v5-links-col a {
+  color: #A0A0A0;
+  text-decoration: none !important;
+  font-size: 0.925rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Inter', sans-serif;
+}
+
+.footer-v5-links-col a:hover {
+  color: #ffffff !important;
+}
+
+/* Bottom Bar */
+.footer-v5-bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 20px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.footer-v5-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.footer-v5-back-to-top:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-v5-credits {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
