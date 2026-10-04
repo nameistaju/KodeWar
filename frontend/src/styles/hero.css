@@ -383,26 +383,38 @@
   filter: brightness(0) invert(1) opacity(1);
 }
 
-/* INTERACTIVE PORTAL IMAGES (No borders, pure images) */
-.hero-interactive-portals {
-  display: flex;
-  align-items: flex-end;
-  gap: clamp(12px, 1.8vw, 22px);
-}
-
-.hero-portal-link {
+/* FLOATING GLOBE INTERACTIVE PORTALS (4x Enlarge Size, Top-Right & Bottom-Left of Earth) */
+.globe-floating-portal {
+  position: absolute;
+  z-index: 10;
   display: inline-block;
   text-decoration: none;
   background: transparent !important;
   border: none !important;
   outline: none !important;
+  box-shadow: none !important;
   padding: 0 !important;
   margin: 0 !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+  pointer-events: auto;
 }
 
-.hero-portal-img {
-  height: clamp(90px, 13vh, 135px);
+/* Top Right of Globe: Businessman -> /digital-marketing */
+.globe-floating-portal.portal-top-right {
+  top: -12%;
+  right: -16%;
+}
+
+/* Bottom Left of Globe: Cheerful Student -> /careers */
+.globe-floating-portal.portal-bottom-left {
+  bottom: -12%;
+  left: -18%;
+}
+
+.globe-portal-img {
+  height: clamp(260px, 32vw, 420px);
   width: auto;
+  max-width: 480px;
   object-fit: contain;
   display: block;
   border: none !important;
@@ -410,11 +422,26 @@
   box-shadow: none !important;
   background: transparent !important;
   border-radius: 0 !important;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
+  filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.65));
 }
 
-.hero-portal-link:hover .hero-portal-img {
-  transform: translateY(-4px) scale(1.05);
+.globe-floating-portal:hover {
+  transform: scale(1.06) translateY(-6px);
+  z-index: 15;
 }
+
+@media (max-width: 880px) {
+  .globe-floating-portal.portal-top-right {
+    top: -15%;
+    right: -10%;
+  }
+  .globe-floating-portal.portal-bottom-left {
+    bottom: -15%;
+    left: -10%;
+  }
+  .globe-portal-img {
+    height: clamp(180px, 42vw, 280px);
+  }
+}
+
 

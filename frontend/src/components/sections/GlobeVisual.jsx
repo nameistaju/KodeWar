@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import landPoints from '../../data/globeLandPoints.json';
 
 // Global hubs coordinates [lat, lon]
@@ -285,7 +286,7 @@ export default function GlobeVisual() {
   };
 
   return (
-    <div ref={containerRef} className="hero-globe-wrapper" aria-hidden="true">
+    <div ref={containerRef} className="hero-globe-wrapper">
       <div className="globe-ambient-glow"></div>
       <canvas
         ref={canvasRef}
@@ -295,6 +296,32 @@ export default function GlobeVisual() {
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
       />
+
+      {/* Earth Top Right Portal: Businessman -> /digital-marketing */}
+      <Link
+        to="/digital-marketing"
+        className="globe-floating-portal portal-top-right"
+        title="Digital Marketing Solutions"
+      >
+        <img
+          src="/businessMan.png"
+          alt="Digital Marketing Solutions"
+          className="globe-portal-img"
+        />
+      </Link>
+
+      {/* Earth Bottom Left Portal: Cheerful Student -> /careers */}
+      <Link
+        to="/careers"
+        className="globe-floating-portal portal-bottom-left"
+        title="Student Careers & Training"
+      >
+        <img
+          src="/Cheerful Student.png"
+          alt="Student Careers"
+          className="globe-portal-img"
+        />
+      </Link>
     </div>
   );
 }
