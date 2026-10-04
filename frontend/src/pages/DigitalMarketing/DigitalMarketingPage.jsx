@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/digitalMarketing.css';
 
 import DMHero from './components/DMHero';
@@ -12,12 +12,29 @@ import DMTestimonials from './components/DMTestimonials';
 import DMPricing from './components/DMPricing';
 import DMContactForm from './components/DMContactForm';
 import DMFinalCTA from './components/DMFinalCTA';
+import DMLeadModal from './components/DMLeadModal';
 
 export default function DigitalMarketingPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     document.title = 'Digital Marketing & Growth Systems | KODEWAR';
     window.scrollTo(0, 0);
+
+    const dismissed = sessionStorage.getItem('dm_lead_dismissed');
+    const submitted = sessionStorage.getItem('dm_lead_submitted');
+    if (!dismissed && !submitted) {
+      const timer = setTimeout(() => {
+        setIsModalOpen(true);
+      }, 1200);
+      return () => clearTimeout(timer);
+    }
   }, []);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    sessionStorage.setItem('dm_lead_dismissed', 'true');
+  };
 
   return (
     <div className="dm-page-wrapper">
@@ -53,6 +70,9 @@ export default function DigitalMarketingPage() {
 
       {/* 10. Final Impact CTA */}
       <DMFinalCTA />
+
+      {/* Pop-up Lead Capture Form */}
+      <DMLeadModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 }

@@ -13,6 +13,7 @@ import CandidateTestimonials from './components/CandidateTestimonials';
 import CareerFAQ from './components/CareerFAQ';
 import StudentApplicationForm from './components/StudentApplicationForm';
 import CareerCTA from './components/CareerCTA';
+import CareerLeadModal from './components/CareerLeadModal';
 import { CAREER_JOBS } from './data/careerJobsData';
 
 export default function CareersPage() {
@@ -23,10 +24,27 @@ export default function CareersPage() {
   const [selectedLocation, setSelectedLocation] = useState('All Locations');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedRoleForModal, setSelectedRoleForModal] = useState(null);
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
 
   useEffect(() => {
     document.title = 'Careers & Talent Incubator | KODEWAR Technologies';
-    
+
+    const dismissed = sessionStorage.getItem('career_lead_dismissed');
+    const submitted = sessionStorage.getItem('career_lead_submitted');
+    if (!dismissed && !submitted && !id) {
+      const timer = setTimeout(() => {
+        setIsLeadModalOpen(true);
+      }, 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [id]);
+
+  const handleCloseLeadModal = () => {
+    setIsLeadModalOpen(false);
+    sessionStorage.setItem('career_lead_dismissed', 'true');
+  };
+
+  useEffect(() => {
     // Check if a direct job ID is provided in URL
     if (id) {
       const match = CAREER_JOBS.find((j) => j.id === id);
@@ -103,6 +121,9 @@ export default function CareersPage() {
           onClose={() => setSelectedRoleForModal(null)}
         />
       )}
+
+      {/* 11. Pop-up Talent Lead Capture Form */}
+      <CareerLeadModal isOpen={isLeadModalOpen} onClose={handleCloseLeadModal} />
     </div>
   );
 }

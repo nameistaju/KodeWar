@@ -232,6 +232,43 @@
     visibility: visible;
   }
 
+  .mobile-nav-header {
+    position: absolute;
+    top: 18px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mobile-nav-close-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--chrome-1);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+  }
+
+  .mobile-nav-close-btn:hover {
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-nav-close-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: #FFFFFF;
+  }
+
   .mobile-nav-links {
     display: flex;
     flex-direction: column;

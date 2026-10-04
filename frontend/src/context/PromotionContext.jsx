@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
-const STORAGE_KEY = 'kodewar_promotions_v1';
+const STORAGE_KEY = 'kodewar_promotions_v2';
 
 /**
  * Default promotional offers to seed when localStorage is empty.

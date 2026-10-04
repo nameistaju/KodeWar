@@ -123,13 +123,34 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer Overlay */}
       <div
         id="mobile-nav-drawer"
         className={`mobile-nav-overlay ${isMobileOpen ? 'open' : ''}`}
         aria-hidden={!isMobileOpen}
       >
+        {/* Mobile Header with Logo & Close X Button */}
+        <div className="mobile-nav-header">
+          <Link to="/" onClick={closeMenu} className="nav-logo">
+            <img src="/whitelogo_notext.png" alt="Kodewar Logo" />
+            <span>KODEWAR</span>
+          </Link>
+          <button
+            type="button"
+            className="mobile-nav-close-btn"
+            onClick={closeMenu}
+            aria-label="Close navigation menu"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
         <div className="mobile-nav-links">
+          <Link to="/" onClick={closeMenu} className={isActive('/') ? 'active' : ''}>
+            Home
+          </Link>
           <Link to="/services" onClick={closeMenu} className={isActive('/services') ? 'active' : ''}>
             Services
           </Link>

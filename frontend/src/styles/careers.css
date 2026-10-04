@@ -324,6 +324,58 @@
   }
 }
 
+@media (max-width: 768px) {
+  .career-hero-section {
+    padding-top: 100px !important;
+    padding-bottom: 40px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    overflow: visible !important;
+  }
+
+  .career-hero-container {
+    padding: 0 8px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .career-hero-find-title {
+    font-size: clamp(28px, 7vw, 42px);
+  }
+
+  .career-search-pill-bar {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-radius: 16px;
+  }
+
+  .search-pill-divider {
+    display: none;
+  }
+
+  .search-pill-field.location-field {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 6px;
+    width: 100%;
+  }
+
+  .career-hero-ctas {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-career-primary,
+  .btn-career-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .career-hero-illustration-pure {
+    max-height: 280px;
+  }
+}
+
 /* --------------------------------------------------
    2. JOB SEARCH & DISCOVERY
    -------------------------------------------------- */

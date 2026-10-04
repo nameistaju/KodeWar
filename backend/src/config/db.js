@@ -23,6 +23,7 @@ const COLLECTIONS = new Set([
   'testimonials',
   'promotions',
   'audit_logs',
+  'leads',
 ]);
 
 const INITIAL_DB = {
@@ -34,6 +35,7 @@ const INITIAL_DB = {
   testimonials: [],
   promotions: [],
   audit_logs: [],
+  leads: [],
 };
 
 if (!fs.existsSync(DATA_DIR)) {

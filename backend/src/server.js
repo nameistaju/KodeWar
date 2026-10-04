@@ -15,6 +15,7 @@ import jobsRoutes from './routes/jobs.js';
 import trainingRoutes from './routes/training.js';
 import testimonialsRoutes from './routes/testimonials.js';
 import adminRoutes from './routes/admin.js';
+import leadsRoutes from './routes/leads.js';
 
 // Validate critical security environment variables on startup
 validateJwtConfig();
@@ -123,6 +124,7 @@ app.use('/api/jobs', jobsRoutes);
 app.use('/api/training', trainingRoutes);
 app.use('/api/testimonials', testimonialsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/leads', leadsRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

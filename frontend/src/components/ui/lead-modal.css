@@ -1,0 +1,207 @@
+/* ==================================================
+   KODEWAR LEAD COLLECTION POPUP MODALS
+   Theme: Strict Monochrome (#000000, #09090C, #111218, #FFFFFF)
+   Accents: Blacks, Whites, Greys
+   ================================================== */
+
+.lead-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  animation: leadModalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes leadModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lead-modal-card {
+  position: relative;
+  background: #09090C;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 0;
+  width: 100%;
+  max-width: 560px;
+  padding: clamp(2rem, 4vw, 3rem);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95);
+  box-sizing: border-box;
+  animation: leadModalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes leadModalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lead-modal-close-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #050507;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #A1A1AA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.lead-modal-close-btn:hover {
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #FFFFFF;
+  transform: rotate(90deg);
+}
+
+.lead-modal-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+  margin-bottom: 0.5rem;
+}
+
+.lead-modal-title {
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.lead-modal-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #8A8A8A;
+  margin: 0 0 1.75rem 0;
+}
+
+/* Form Fields */
+.lead-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.lead-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.lead-field-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.725rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+}
+
+.lead-field-input,
+.lead-field-select,
+.lead-field-textarea {
+  width: 100%;
+  height: 2.85rem;
+  background: #050507;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  color: #FFFFFF;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.lead-field-textarea {
+  height: auto;
+  min-height: 70px;
+  padding: 0.75rem 1rem;
+  resize: vertical;
+}
+
+.lead-field-input:focus,
+.lead-field-select:focus,
+.lead-field-textarea:focus {
+  outline: none;
+  border-color: #FFFFFF;
+  background: #111218;
+  box-shadow: 0 0 0 1px #FFFFFF, 0 4px 16px rgba(255, 255, 255, 0.08);
+}
+
+.lead-field-select option {
+  background: #09090C;
+  color: #FFFFFF;
+}
+
+.lead-submit-btn {
+  background: #FFFFFF;
+  color: #000000;
+  font-family: 'Syne', 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid #FFFFFF;
+  border-radius: 0;
+  padding: 0.875rem 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  transition: all 0.25s ease;
+  margin-top: 0.5rem;
+}
+
+.lead-submit-btn:hover:not(:disabled) {
+  background: #E5E7EB;
+  border-color: #E5E7EB;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+.lead-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lead-success-msg {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
+  text-align: center;
+  color: #FFFFFF;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
