@@ -8,7 +8,6 @@ import JobApplicationModal from './components/JobApplicationModal';
 import WhyKodewar from './components/WhyKodewar';
 import TrainingPlacement from './components/TrainingPlacement';
 import CareerTeam from './components/CareerTeam';
-import HowItWorks from './components/HowItWorks';
 import CandidateTestimonials from './components/CandidateTestimonials';
 import CareerFAQ from './components/CareerFAQ';
 import StudentApplicationForm from './components/StudentApplicationForm';
@@ -102,10 +101,7 @@ export default function CareersPage() {
       {/* 05. The People Behind The Work (Real Team PNG Assets) */}
       <CareerTeam />
 
-      {/* 06. How It Works (4-Step Process) */}
-      <HowItWorks />
-
-      {/* 07. Student Testimonials / Reviews */}
+      {/* 06. Student Testimonials / Reviews */}
       <CandidateTestimonials />
 
       {/* 08. Frequently Asked Questions */}
