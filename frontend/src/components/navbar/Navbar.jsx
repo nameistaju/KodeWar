@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
+  const { user, isAuthenticated } = useAuth();
+
+  const isAdmin = Boolean(
+    user && (
+      user.role === 'ADMIN' ||
+      user.role === 'admin' ||
+      user.is_admin ||
+      user.isAdmin ||
+      user.email === 'admin@kodewar.com'
+    )
+  );
+
+  const profileDestination = !isAuthenticated
+    ? '/careers/login'
+    : isAdmin
+    ? '/admin'
+    : '/careers/dashboard';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,11 +114,16 @@ export default function Navbar() {
             </svg>
           </a>
 
-          <Link to="/contact" className="nav-cta-btn">
-            <span>Start a Project</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7" />
+          <Link
+            to={profileDestination}
+            className="nav-cta-btn"
+            title={isAuthenticated ? (isAdmin ? 'Admin Portal' : 'Candidate Profile') : 'Login / Profile'}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
             </svg>
+            <span>Profile</span>
           </Link>
         </div>
 
@@ -187,11 +210,17 @@ export default function Navbar() {
             </svg>
           </a>
 
-          <Link to="/contact" className="nav-cta-btn" onClick={closeMenu}>
-            <span>Start a Project</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7" />
+          <Link
+            to={profileDestination}
+            className="nav-cta-btn"
+            onClick={closeMenu}
+            title={isAuthenticated ? (isAdmin ? 'Admin Portal' : 'Candidate Profile') : 'Login / Profile'}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
             </svg>
+            <span>Profile</span>
           </Link>
         </div>
       </div>
