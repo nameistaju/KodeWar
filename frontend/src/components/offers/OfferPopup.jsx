@@ -82,7 +82,7 @@ export default function OfferPopup() {
     document.body.style.overflow = 'hidden';
 
     if (closeButtonRef.current) {
-      closeButtonRef.current.focus();
+      closeButtonRef.current.focus({ preventScroll: true });
     }
 
     const handleKeyDown = (e) => {
@@ -97,7 +97,7 @@ export default function OfferPopup() {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
       if (previousActiveElement.current && typeof previousActiveElement.current.focus === 'function') {
-        previousActiveElement.current.focus();
+        previousActiveElement.current.focus({ preventScroll: true });
       }
     };
   }, [isOpen]);
@@ -109,15 +109,17 @@ export default function OfferPopup() {
     if (!activePopupPromotion) return;
 
     const { id, popupFrequency = 'session' } = activePopupPromotion;
-    try {
-      if (popupFrequency === 'session') {
-        sessionStorage.setItem(`kwt_promo_${id}_dismissed`, 'true');
-      } else if (popupFrequency === 'day') {
-        localStorage.setItem(`kwt_promo_${id}_day`, Date.now().toString());
+    setTimeout(() => {
+      try {
+        if (popupFrequency === 'session') {
+          sessionStorage.setItem(`kwt_promo_${id}_dismissed`, 'true');
+        } else if (popupFrequency === 'day') {
+          localStorage.setItem(`kwt_promo_${id}_day`, Date.now().toString());
+        }
+      } catch {
+        // Ignore storage errors in private browsing
       }
-    } catch {
-      // Ignore storage errors in private browsing
-    }
+    }, 0);
   };
 
   const handleBackdropClick = (e) => {
@@ -131,6 +133,20 @@ export default function OfferPopup() {
   }
 
   const { image, title, destinationUrl, openInNewTab } = activePopupPromotion;
+
+  const posterImageElement = (
+    <picture>
+      {image.endsWith('.png') && (
+        <source srcSet={image.replace(/\.png$/i, '.webp')} type="image/webp" />
+      )}
+      <img
+        src={image}
+        alt={title || 'Promotional Poster'}
+        className="offer-poster-img"
+        decoding="async"
+      />
+    </picture>
+  );
 
   return (
     <div
@@ -166,18 +182,10 @@ export default function OfferPopup() {
             rel={openInNewTab ? 'noopener noreferrer' : undefined}
             className="offer-popup-link"
           >
-            <img
-              src={image}
-              alt={title || 'Promotional Poster'}
-              className="offer-poster-img"
-            />
+            {posterImageElement}
           </a>
         ) : (
-          <img
-            src={image}
-            alt={title || 'Promotional Poster'}
-            className="offer-poster-img"
-          />
+          posterImageElement
         )}
       </div>
     </div>

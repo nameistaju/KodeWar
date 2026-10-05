@@ -1,10 +1,23 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
-const STORAGE_KEY = 'kodewar_promotions_v2';
+/**
+ * Bump this key whenever the default promotion poster changes.
+ * Changing the key forces every browser — including first-time and returning
+ * visitors — to discard any old localStorage data and re-seed from
+ * DEFAULT_PROMOTIONS, which references the newest hashed asset URL.
+ *
+ * History:
+ *  kodewar_promotions_v1 — original launch
+ *  kodewar_promotions_v2 — first digital-growth poster
+ *  kodewar_promotions_v3 — switched to hashed/versioned WebP (digital-growth-b4ca5d92.webp)
+ */
+const STORAGE_KEY = 'kodewar_promotions_v3';
 
 /**
  * Default promotional offers to seed when localStorage is empty.
- * Uses existing assets inside /public/offers/
+ * Uses content-hashed filenames inside /public/offers/ so that the
+ * asset URL changes automatically whenever the image content changes,
+ * busting CDN/browser cache without requiring a manual cache-clear.
  */
 const DEFAULT_PROMOTIONS = [
   {
@@ -30,8 +43,9 @@ const DEFAULT_PROMOTIONS = [
   {
     id: 'promo-digital-growth',
     title: 'Digital Marketing Growth Campaign',
-    image: '/offers/digital-growth.png',
-    imageName: 'digital-growth.png',
+    // Content-hashed filename — update hash + copy file when poster changes.
+    image: '/offers/digital-growth-b4ca5d92.webp',
+    imageName: 'digital-growth-b4ca5d92.webp',
     destinationUrl: '/digital-marketing',
     openInNewTab: false,
     homepageBanner: true,
@@ -45,7 +59,7 @@ const DEFAULT_PROMOTIONS = [
     autoCloseDuration: 8,
     priority: 1,
     createdAt: '2026-10-01T11:00:00.000Z',
-    updatedAt: '2026-10-01T11:00:00.000Z',
+    updatedAt: '2026-10-05T08:25:00.000Z',
   },
 ];
 
@@ -80,6 +94,12 @@ const PromotionContext = createContext(null);
 
 export function PromotionProvider({ children }) {
   const [promotions, setPromotions] = useState(() => {
+    // Clean up stale keys from previous versions so their data never resurfaces.
+    try {
+      localStorage.removeItem('kodewar_promotions_v1');
+      localStorage.removeItem('kodewar_promotions_v2');
+    } catch (_) { /* ignore */ }
+
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {

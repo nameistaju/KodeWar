@@ -667,12 +667,12 @@ export default function AdminPromotionForm() {
                     type="button"
                     className="preset-pill"
                     onClick={() => {
-                      setImage('/offers/digital-growth.png');
-                      setImageName('digital-growth.png');
+                      setImage('/offers/digital-growth-b4ca5d92.webp');
+                      setImageName('digital-growth-b4ca5d92.webp');
                       if (!title) setTitle('Digital Growth Campaign');
                     }}
                   >
-                    Digital Growth (PNG)
+                    Digital Growth (WebP)
                   </button>
                 </div>
               </div>

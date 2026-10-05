@@ -24,7 +24,7 @@ export const INITIAL_OFFERS = [
   },
   {
     id: "poster-002",
-    image: "/offers/digital-growth.png", // Landscape poster example (1672 x 941)
+    image: "/offers/digital-growth-b4ca5d92.webp", // Landscape poster (1672 x 941) — content-hashed
     active: true,
     startDate: "",
     endDate: "",
