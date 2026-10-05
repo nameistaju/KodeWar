@@ -1,30 +1,19 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
-/**
- * Bump this key whenever the default promotion poster changes.
- * Changing the key forces every browser — including first-time and returning
- * visitors — to discard any old localStorage data and re-seed from
- * DEFAULT_PROMOTIONS, which references the newest hashed asset URL.
- *
- * History:
- *  kodewar_promotions_v1 — original launch
- *  kodewar_promotions_v2 — first digital-growth poster
- *  kodewar_promotions_v3 — switched to hashed/versioned WebP (digital-growth-b4ca5d92.webp)
- */
-const STORAGE_KEY = 'kodewar_promotions_v3';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const STORAGE_KEY = 'kodewar_promotions_v4_cloudinary';
 
 /**
- * Default promotional offers to seed when localStorage is empty.
- * Uses content-hashed filenames inside /public/offers/ so that the
- * asset URL changes automatically whenever the image content changes,
- * busting CDN/browser cache without requiring a manual cache-clear.
+ * Authoritative default Cloudinary promotional assets.
+ * Zero dependency on local static assets in /public/offers/ or Vercel static files.
  */
 const DEFAULT_PROMOTIONS = [
   {
-    id: 'promo-dussehra',
-    title: 'Dussehra Special Offer',
-    image: '/offers/dussehra-special.svg',
-    imageName: 'dussehra-special.svg',
+    id: 'promo-dussehra-special-2026',
+    title: 'Dussehra Festival Special Offer',
+    image: 'https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216612/kodewar/promotions/dussehra-special-2026.jpg',
+    imageUrl: 'https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216612/kodewar/promotions/dussehra-special-2026.jpg',
+    cloudinaryPublicId: 'kodewar/promotions/dussehra-special-2026',
     destinationUrl: '/contact',
     openInNewTab: false,
     homepageBanner: false,
@@ -33,19 +22,19 @@ const DEFAULT_PROMOTIONS = [
     startDate: '',
     endDate: '',
     popupDelay: 3,
-    popupFrequency: 'session', // 'session' | 'day' | 'always'
+    popupFrequency: 'session',
     autoClose: false,
     autoCloseDuration: 8,
     priority: 1,
     createdAt: '2026-10-01T10:00:00.000Z',
-    updatedAt: '2026-10-01T10:00:00.000Z',
+    updatedAt: '2026-10-05T16:00:00.000Z',
   },
   {
-    id: 'promo-digital-growth',
-    title: 'Digital Marketing Growth Campaign',
-    // Content-hashed filename — update hash + copy file when poster changes.
-    image: '/offers/digital-growth-b4ca5d92.webp',
-    imageName: 'digital-growth-b4ca5d92.webp',
+    id: 'promo-digital-growth-2026',
+    title: 'Digital Marketing Growth Campaign 2026',
+    image: 'https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216610/kodewar/promotions/digital-growth-2026.jpg',
+    imageUrl: 'https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216610/kodewar/promotions/digital-growth-2026.jpg',
+    cloudinaryPublicId: 'kodewar/promotions/digital-growth-2026',
     destinationUrl: '/digital-marketing',
     openInNewTab: false,
     homepageBanner: true,
@@ -59,16 +48,12 @@ const DEFAULT_PROMOTIONS = [
     autoCloseDuration: 8,
     priority: 1,
     createdAt: '2026-10-01T11:00:00.000Z',
-    updatedAt: '2026-10-05T08:25:00.000Z',
+    updatedAt: '2026-10-05T16:00:00.000Z',
   },
 ];
 
-/**
- * Calculates dynamic promotion status based on enabled state and dates.
- * Returns: 'ACTIVE' | 'SCHEDULED' | 'EXPIRED' | 'DISABLED' | 'DRAFT'
- */
 export function getPromotionStatus(promo, now = new Date()) {
-  if (!promo || !promo.image) return 'DRAFT';
+  if (!promo || (!promo.image && !promo.imageUrl)) return 'DRAFT';
   if (!promo.enabled) return 'DISABLED';
 
   const currentTime = now.getTime();
@@ -94,10 +79,11 @@ const PromotionContext = createContext(null);
 
 export function PromotionProvider({ children }) {
   const [promotions, setPromotions] = useState(() => {
-    // Clean up stale keys from previous versions so their data never resurfaces.
+    // Purge outdated storage keys
     try {
       localStorage.removeItem('kodewar_promotions_v1');
       localStorage.removeItem('kodewar_promotions_v2');
+      localStorage.removeItem('kodewar_promotions_v3');
     } catch (_) { /* ignore */ }
 
     try {
@@ -105,7 +91,9 @@ export function PromotionProvider({ children }) {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          // Filter out any obsolete /offers/ local paths
+          const validOnly = parsed.filter((p) => p.image && !p.image.startsWith('/offers/'));
+          if (validOnly.length > 0) return validOnly;
         }
       }
     } catch (e) {
@@ -114,7 +102,31 @@ export function PromotionProvider({ children }) {
     return DEFAULT_PROMOTIONS;
   });
 
-  // Sync to localStorage
+  // Fetch promotions from backend API on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchApiPromotions() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/promotions`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && Array.isArray(data.promotions) && data.promotions.length > 0) {
+          if (isMounted) {
+            setPromotions(data.promotions);
+          }
+        }
+      } catch (err) {
+        console.warn('[PromotionContext] Could not fetch promotions from API, using cached state:', err);
+      }
+    }
+
+    fetchApiPromotions();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Sync state to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(promotions));
@@ -128,13 +140,11 @@ export function PromotionProvider({ children }) {
     const now = new Date();
     return promotions.map((p) => ({
       ...p,
+      image: p.image || p.imageUrl || '',
       computedStatus: getPromotionStatus(p, now),
     }));
   }, [promotions]);
 
-  // Active Homepage Banner Promotion:
-  // Must have computedStatus === 'ACTIVE' and homepageBanner === true.
-  // Sorted by priority (ascending 1..100) then updatedAt desc.
   const activeBannerPromotion = useMemo(() => {
     const bannerPromos = enrichedPromotions.filter(
       (p) => p.computedStatus === 'ACTIVE' && p.homepageBanner
@@ -148,9 +158,6 @@ export function PromotionProvider({ children }) {
     })[0];
   }, [enrichedPromotions]);
 
-  // Active Popup Promotion:
-  // Must have computedStatus === 'ACTIVE' and popup === true.
-  // Sorted by priority (ascending 1..100) then updatedAt desc.
   const activePopupPromotion = useMemo(() => {
     const popupPromos = enrichedPromotions.filter(
       (p) => p.computedStatus === 'ACTIVE' && p.popup
@@ -168,10 +175,11 @@ export function PromotionProvider({ children }) {
   const createPromotion = useCallback((promoData) => {
     const now = new Date().toISOString();
     const newPromo = {
-      id: 'promo-' + Date.now(),
+      id: promoData.id || 'promo-' + Date.now(),
       title: promoData.title || 'Untitled Promotion',
-      image: promoData.image || '',
-      imageName: promoData.imageName || '',
+      image: promoData.imageUrl || promoData.image || '',
+      imageUrl: promoData.imageUrl || promoData.image || '',
+      cloudinaryPublicId: promoData.cloudinaryPublicId || '',
       destinationUrl: promoData.destinationUrl || '',
       openInNewTab: Boolean(promoData.openInNewTab),
       homepageBanner: Boolean(promoData.homepageBanner),
@@ -196,9 +204,12 @@ export function PromotionProvider({ children }) {
     setPromotions((prev) =>
       prev.map((promo) => {
         if (promo.id === id) {
+          const img = updatedFields.imageUrl || updatedFields.image || promo.image || promo.imageUrl;
           return {
             ...promo,
             ...updatedFields,
+            image: img,
+            imageUrl: img,
             updatedAt: new Date().toISOString(),
           };
         }
@@ -257,6 +268,7 @@ export function PromotionProvider({ children }) {
       togglePromotionEnabled,
       duplicatePromotion,
       resetToDefaults,
+      setPromotions,
     }),
     [
       enrichedPromotions,

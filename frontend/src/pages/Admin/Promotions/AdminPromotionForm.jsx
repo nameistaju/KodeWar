@@ -4,6 +4,8 @@ import { usePromotions } from '../../../context/PromotionContext';
 import AdminLayout from '../../../layouts/AdminLayout';
 import './adminPromotions.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export default function AdminPromotionForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ export default function AdminPromotionForm() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [previewAspect, setPreviewAspect] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [previewMode, setPreviewMode] = useState('popup'); // 'popup' | 'banner'
 
   const fileInputRef = useRef(null);
@@ -41,7 +44,7 @@ export default function AdminPromotionForm() {
   useEffect(() => {
     if (isEditing && existingPromo) {
       setTitle(existingPromo.title || '');
-      setImage(existingPromo.image || '');
+      setImage(existingPromo.image || existingPromo.imageUrl || '');
       setImageName(existingPromo.imageName || '');
       setDestinationUrl(existingPromo.destinationUrl || '');
       setOpenInNewTab(Boolean(existingPromo.openInNewTab));
@@ -135,8 +138,8 @@ export default function AdminPromotionForm() {
     setIsDragOver(false);
   };
 
-  // Submit Handler
-  const handleSubmit = (e) => {
+  // Submit Handler: uploads to Cloudinary via backend API
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
 
@@ -155,31 +158,86 @@ export default function AdminPromotionForm() {
       return;
     }
 
-    const payload = {
-      title: title.trim(),
-      image,
-      imageName: imageName || 'uploaded-poster',
-      destinationUrl: destinationUrl.trim(),
-      openInNewTab,
-      homepageBanner,
-      popup,
-      enabled,
-      startDate,
-      endDate,
-      popupDelay: Number(popupDelay),
-      popupFrequency,
-      autoClose,
-      autoCloseDuration: Number(autoCloseDuration),
-      priority: Number(priority),
-    };
+    setSubmitting(true);
 
-    if (isEditing) {
-      updatePromotion(id, payload);
-    } else {
-      createPromotion(payload);
+    try {
+      const token = localStorage.getItem('kwt_candidate_token');
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      };
+
+      let finalImageUrl = image;
+      let finalCloudinaryPublicId = existingPromo?.cloudinaryPublicId || '';
+
+      // If image is base64 string, upload to Cloudinary via backend service
+      if (image.startsWith('data:image/')) {
+        const uploadRes = await fetch(`${API_BASE_URL}/admin/promotions/upload`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            image,
+            title: title.trim(),
+            slugName: imageName || title.trim(),
+          }),
+        });
+
+        const uploadData = await uploadRes.json();
+        if (!uploadRes.ok || !uploadData.success) {
+          throw new Error(uploadData.message || 'Failed to upload promotion image to Cloudinary.');
+        }
+
+        finalImageUrl = uploadData.imageUrl;
+        finalCloudinaryPublicId = uploadData.cloudinaryPublicId;
+      }
+
+      const payload = {
+        title: title.trim(),
+        image: finalImageUrl,
+        imageUrl: finalImageUrl,
+        cloudinaryPublicId: finalCloudinaryPublicId,
+        destinationUrl: destinationUrl.trim(),
+        openInNewTab,
+        homepageBanner,
+        popup,
+        enabled,
+        startDate,
+        endDate,
+        popupDelay: Number(popupDelay),
+        popupFrequency,
+        autoClose,
+        autoCloseDuration: Number(autoCloseDuration),
+        priority: Number(priority),
+      };
+
+      // Persist in backend DB
+      const saveRes = await fetch(
+        isEditing ? `${API_BASE_URL}/admin/promotions/${id}` : `${API_BASE_URL}/admin/promotions`,
+        {
+          method: isEditing ? 'PUT' : 'POST',
+          headers,
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const saveData = await saveRes.json();
+      if (!saveRes.ok || !saveData.success) {
+        console.warn('[Admin] DB sync notice:', saveData.message);
+      }
+
+      if (isEditing) {
+        updatePromotion(id, payload);
+      } else {
+        createPromotion({ ...payload, id: saveData.promotion?.id || undefined });
+      }
+
+      navigate('/admin/promotions');
+    } catch (err) {
+      console.error('Promotion submit error:', err);
+      setErrorMsg(err.message || 'Failed to save promotion. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
-
-    navigate('/admin/promotions');
   };
 
   return (
@@ -656,23 +714,23 @@ export default function AdminPromotionForm() {
                     type="button"
                     className="preset-pill"
                     onClick={() => {
-                      setImage('/offers/dussehra-special.svg');
-                      setImageName('dussehra-special.svg');
-                      if (!title) setTitle('Dussehra Festive Special');
+                      setImage('https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216612/kodewar/promotions/dussehra-special-2026.jpg');
+                      setImageName('dussehra-special-2026.jpg');
+                      if (!title) setTitle('Dussehra Festive Special 2026');
                     }}
                   >
-                    Dussehra Special (SVG)
+                    Dussehra Special (Cloudinary)
                   </button>
                   <button
                     type="button"
                     className="preset-pill"
                     onClick={() => {
-                      setImage('/offers/digital-growth-b4ca5d92.webp');
-                      setImageName('digital-growth-b4ca5d92.webp');
-                      if (!title) setTitle('Digital Growth Campaign');
+                      setImage('https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216610/kodewar/promotions/digital-growth-2026.jpg');
+                      setImageName('digital-growth-2026.jpg');
+                      if (!title) setTitle('Digital Growth Campaign 2026');
                     }}
                   >
-                    Digital Growth (WebP)
+                    Digital Growth (Cloudinary)
                   </button>
                 </div>
               </div>

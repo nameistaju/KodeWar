@@ -134,18 +134,15 @@ export default function OfferPopup() {
 
   const { image, title, destinationUrl, openInNewTab } = activePopupPromotion;
 
+  const imageUrl = image || activePopupPromotion.imageUrl;
+
   const posterImageElement = (
-    <picture>
-      {image.endsWith('.png') && (
-        <source srcSet={image.replace(/\.png$/i, '.webp')} type="image/webp" />
-      )}
-      <img
-        src={image}
-        alt={title || 'Promotional Poster'}
-        className="offer-poster-img"
-        decoding="async"
-      />
-    </picture>
+    <img
+      src={imageUrl}
+      alt={title || 'Promotional Poster'}
+      className="offer-poster-img"
+      decoding="async"
+    />
   );
 
   return (

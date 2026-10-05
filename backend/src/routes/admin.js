@@ -1,10 +1,23 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import multer from 'multer';
 import { db } from '../config/db.js';
 import { authenticateUser, requireAdmin } from '../middleware/auth.js';
 import { storageService } from '../services/storageService.js';
 import { queryAuditLogs, writeAuditLog } from '../services/auditService.js';
+import { cloudinaryService } from '../services/cloudinaryService.js';
+
+const upload = multer({
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files (JPG, PNG, WEBP, SVG) are allowed.'), false);
+    }
+  },
+});
 
 const router = express.Router();
 
@@ -930,6 +943,209 @@ router.delete('/testimonials/:id', async (req, res) => {
   } catch (err) {
     console.error('Admin delete testimonial error:', err);
     return res.status(500).json({ success: false, message: 'Server error deleting testimonial.' });
+  }
+});
+
+// ==================================================
+// 7. PROMOTIONS & CLOUDINARY MANAGEMENT
+// ==================================================
+
+// POST /api/admin/promotions/upload
+// Upload image to Cloudinary (folder: kodewar/promotions/)
+router.post('/promotions/upload', upload.single('imageFile'), async (req, res) => {
+  try {
+    let fileSource = null;
+    let slugName = req.body.title || req.body.slugName || 'promotion';
+
+    if (req.file) {
+      fileSource = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+      if (req.file.originalname) slugName = req.file.originalname;
+    } else if (req.body.image) {
+      fileSource = req.body.image;
+    }
+
+    if (!fileSource) {
+      return res.status(400).json({
+        success: false,
+        message: 'No image file or base64 image data provided.',
+      });
+    }
+
+    const uploadRes = await cloudinaryService.uploadPromotionImage(fileSource, slugName);
+
+    await writeAuditLog(req, {
+      action: 'PROMOTION_IMAGE_UPLOADED',
+      entity_type: 'PROMOTION',
+      entity_id: uploadRes.cloudinaryPublicId,
+      metadata: { public_id: uploadRes.cloudinaryPublicId, image_url: uploadRes.imageUrl },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Promotion image uploaded to Cloudinary successfully.',
+      imageUrl: uploadRes.imageUrl,
+      cloudinaryPublicId: uploadRes.cloudinaryPublicId,
+      width: uploadRes.width,
+      height: uploadRes.height,
+      format: uploadRes.format,
+    });
+  } catch (err) {
+    console.error('Admin promotion upload error:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Failed to upload promotion image to Cloudinary.',
+    });
+  }
+});
+
+// GET /api/admin/promotions
+router.get('/promotions', async (req, res) => {
+  try {
+    const list = (await db.get('promotions')) || [];
+    return res.json({
+      success: true,
+      promotions: list,
+      total: list.length,
+    });
+  } catch (err) {
+    console.error('Admin fetch promotions error:', err);
+    return res.status(500).json({ success: false, message: 'Server error retrieving promotions.' });
+  }
+});
+
+// POST /api/admin/promotions
+router.post('/promotions', async (req, res) => {
+  try {
+    const promoData = req.body;
+    let imageUrl = promoData.imageUrl || promoData.image || '';
+    let cloudinaryPublicId = promoData.cloudinaryPublicId || promoData.cloudinary_public_id || '';
+
+    if (imageUrl.startsWith('data:image/')) {
+      const uploadRes = await cloudinaryService.uploadPromotionImage(imageUrl, promoData.title || 'promotion');
+      imageUrl = uploadRes.imageUrl;
+      cloudinaryPublicId = uploadRes.cloudinaryPublicId;
+    }
+
+    if (!imageUrl) {
+      return res.status(400).json({
+        success: false,
+        message: 'Promotional image URL or image file is required.',
+      });
+    }
+
+    const newPromo = await db.insert('promotions', {
+      id: promoData.id || 'promo-' + Date.now(),
+      title: (promoData.title || 'Untitled Promotion').trim(),
+      placement: promoData.placement || (promoData.homepageBanner && promoData.popup ? 'BOTH' : promoData.homepageBanner ? 'BANNER' : 'POPUP'),
+      image_url: imageUrl,
+      cloudinary_public_id: cloudinaryPublicId,
+      target_url: promoData.destinationUrl || promoData.target_url || '',
+      priority: Number(promoData.priority) || 1,
+      is_active: promoData.enabled !== undefined ? Boolean(promoData.enabled) : true,
+      start_date: promoData.startDate || null,
+      end_date: promoData.endDate || null,
+      display_frequency: promoData.popupFrequency || 'ONCE_PER_SESSION',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    await writeAuditLog(req, {
+      action: 'PROMOTION_CREATED',
+      entity_type: 'PROMOTION',
+      entity_id: newPromo.id,
+      metadata: { title: newPromo.title, image_url: newPromo.image_url },
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Promotion published successfully.',
+      promotion: newPromo,
+    });
+  } catch (err) {
+    console.error('Admin create promotion error:', err);
+    return res.status(500).json({ success: false, message: 'Server error creating promotion.' });
+  }
+});
+
+// PUT /api/admin/promotions/:id
+router.put('/promotions/:id', async (req, res) => {
+  try {
+    const promoId = req.params.id;
+    const existing = await db.find('promotions', (p) => p.id === promoId);
+    if (!existing) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    const updates = { ...req.body, updated_at: new Date().toISOString() };
+    if (req.body.image || req.body.imageUrl) {
+      let imageUrl = req.body.imageUrl || req.body.image;
+      if (imageUrl.startsWith('data:image/')) {
+        const uploadRes = await cloudinaryService.replacePromotionImage(
+          existing.cloudinary_public_id,
+          imageUrl,
+          req.body.title || existing.title
+        );
+        updates.image_url = uploadRes.imageUrl;
+        updates.cloudinary_public_id = uploadRes.cloudinaryPublicId;
+      } else {
+        updates.image_url = imageUrl;
+      }
+    }
+
+    if (req.body.title) updates.title = req.body.title.trim();
+    if (req.body.destinationUrl !== undefined) updates.target_url = req.body.destinationUrl;
+    if (req.body.enabled !== undefined) updates.is_active = Boolean(req.body.enabled);
+    if (req.body.priority !== undefined) updates.priority = Number(req.body.priority);
+
+    const updated = await db.update('promotions', (p) => p.id === promoId, updates);
+
+    await writeAuditLog(req, {
+      action: 'PROMOTION_UPDATED',
+      entity_type: 'PROMOTION',
+      entity_id: promoId,
+      metadata: { title: updated.title },
+    });
+
+    return res.json({
+      success: true,
+      message: 'Promotion updated successfully.',
+      promotion: updated,
+    });
+  } catch (err) {
+    console.error('Admin update promotion error:', err);
+    return res.status(500).json({ success: false, message: 'Server error updating promotion.' });
+  }
+});
+
+// DELETE /api/admin/promotions/:id
+router.delete('/promotions/:id', async (req, res) => {
+  try {
+    const promoId = req.params.id;
+    const existing = await db.find('promotions', (p) => p.id === promoId);
+    if (!existing) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    if (existing.cloudinary_public_id) {
+      await cloudinaryService.deletePromotionImage(existing.cloudinary_public_id);
+    }
+
+    await db.delete('promotions', (p) => p.id === promoId);
+
+    await writeAuditLog(req, {
+      action: 'PROMOTION_DELETED',
+      entity_type: 'PROMOTION',
+      entity_id: promoId,
+      metadata: { title: existing.title },
+    });
+
+    return res.json({
+      success: true,
+      message: 'Promotion deleted successfully.',
+    });
+  } catch (err) {
+    console.error('Admin delete promotion error:', err);
+    return res.status(500).json({ success: false, message: 'Server error deleting promotion.' });
   }
 });
 

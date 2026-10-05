@@ -16,15 +16,15 @@
 export const INITIAL_OFFERS = [
   {
     id: "poster-001",
-    image: "/offers/dussehra-special.svg", // Portrait poster example (800 x 1000)
+    image: "https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216612/kodewar/promotions/dussehra-special-2026.jpg",
     active: true,
-    startDate: "", // Empty string means always available
+    startDate: "",
     endDate: "",
-    displayDelay: 5000 // 5 seconds
+    displayDelay: 5000
   },
   {
     id: "poster-002",
-    image: "/offers/digital-growth-b4ca5d92.webp", // Landscape poster (1672 x 941) — content-hashed
+    image: "https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216610/kodewar/promotions/digital-growth-2026.jpg",
     active: true,
     startDate: "",
     endDate: "",

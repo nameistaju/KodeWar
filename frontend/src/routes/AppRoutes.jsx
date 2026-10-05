@@ -7,6 +7,7 @@ import DigitalMarketingPage from '../pages/DigitalMarketing';
 import CareersPage from '../pages/Careers';
 import WorkPage from '../pages/Work';
 import AboutPage from '../pages/About';
+import ContactPage from '../pages/Contact';
 import ServicesPage from '../pages/Services';
 import AdminPortal from '../pages/Admin/AdminPortal';
 import { AdminPromotionsList, AdminPromotionForm } from '../pages/Admin/Promotions';
@@ -98,20 +99,7 @@ export default function AppRoutes() {
 
 
       <Route path="/about" element={<AboutPage />} />
-
-      <Route
-        path="/contact"
-        element={
-          <PlaceholderPage
-            title="Start a Project"
-            category="CONNECT WITH THE STUDIO"
-            subtitle="Ready when you are."
-            description="We partner with teams who view software and digital visibility as core competitive leverage. Reach our team directly at kodewartechnologies@gmail.com."
-            actionText="Email Studio Directly"
-            actionLink="mailto:kodewartechnologies@gmail.com"
-          />
-        }
-      />
+      <Route path="/contact" element={<ContactPage />} />
 
       <Route path="/employee" element={<EmployeePage />} />
 

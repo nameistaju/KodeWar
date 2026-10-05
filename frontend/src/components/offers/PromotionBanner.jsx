@@ -18,22 +18,20 @@ export default function PromotionBanner() {
 
   const { image, title, destinationUrl, openInNewTab } = activeBannerPromotion;
 
+  const imageUrl = image || activeBannerPromotion.imageUrl;
+
   const content = (
-    <picture>
-      {image.endsWith('.png') && (
-        <source srcSet={image.replace(/\.png$/i, '.webp')} type="image/webp" />
-      )}
-      <img
-        src={image}
-        alt={title || 'Promotional Announcement'}
-        className="promotion-banner-poster"
-        decoding="async"
-        fetchPriority="high"
-        width="1672"
-        height="941"
-        style={{ aspectRatio: '1672 / 941' }}
-      />
-    </picture>
+    <img
+      src={imageUrl}
+      alt={title || 'Promotional Announcement'}
+      className="promotion-banner-poster"
+      decoding="async"
+      loading="eager"
+      fetchPriority="high"
+      width="1672"
+      height="941"
+      style={{ aspectRatio: '1672 / 941' }}
+    />
   );
 
   return (

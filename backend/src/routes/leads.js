@@ -4,6 +4,47 @@ import { db } from '../config/db.js';
 const router = express.Router();
 
 // --------------------------------------------------
+// POST /api/leads/contact
+// Submit Contact Us Form Inquiries
+// --------------------------------------------------
+router.post('/contact', async (req, res) => {
+  try {
+    const { name, email, subject, message, phone } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name, email address, and message are required.',
+      });
+    }
+
+    const leadRecord = await db.insert('leads', {
+      id: 'lead_cnt_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+      type: 'GENERAL_CONTACT',
+      full_name: name.trim(),
+      company_name: name.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone ? phone.trim() : '',
+      address: subject ? subject.trim() : 'General Inquiry',
+      purpose: message ? message.trim() : '',
+      created_at: new Date().toISOString(),
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Thank you for reaching out! We have received your message and will respond shortly.',
+      lead: leadRecord,
+    });
+  } catch (err) {
+    console.error('Contact Form submission error:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to send message. Please try again later.',
+    });
+  }
+});
+
+// --------------------------------------------------
 // POST /api/leads/digital-marketing
 // Submit Digital Marketing Lead Inquiries
 // --------------------------------------------------
