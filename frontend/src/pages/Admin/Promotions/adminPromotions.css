@@ -117,6 +117,27 @@
   box-shadow: 0 0 20px rgba(0, 102, 255, 0.35);
 }
 
+.btn-admin-primary:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.admin-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: adminSpin 0.7s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes adminSpin {
+  to { transform: rotate(360deg); }
+}
+
 .btn-admin-secondary {
   display: inline-flex;
   align-items: center;
@@ -921,4 +942,204 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* --------------------------------------------------
+   8. MODERN LUXURY TOAST NOTIFICATIONS
+   -------------------------------------------------- */
+.admin-toast-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 420px;
+  width: calc(100vw - 40px);
+}
+
+.admin-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: rgba(14, 14, 18, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  animation: adminToastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s ease;
+}
+
+.admin-toast.success {
+  border-left: 3px solid #10b981;
+}
+
+.admin-toast.danger {
+  border-left: 3px solid #ef4444;
+}
+
+.admin-toast.info {
+  border-left: 3px solid #3b82f6;
+}
+
+@keyframes adminToastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.admin-toast-icon-wrap {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.admin-toast.danger .admin-toast-icon-wrap {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.admin-toast.success .admin-toast-icon-wrap {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.admin-toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-toast-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-toast-message {
+  font-size: 12.5px;
+  color: #9ca3af;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.admin-toast-close {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.admin-toast-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------
+   9. PROMOTIONS RESPONSIVE DESIGN
+   -------------------------------------------------- */
+@media (max-width: 1024px) {
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .admin-promo-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .admin-promo-actions-group {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-promo-page {
+    padding: 24px 16px;
+  }
+
+  .admin-promo-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .admin-promo-stat-card {
+    padding: 14px 16px;
+  }
+
+  .admin-promo-stat-val {
+    font-size: 22px;
+  }
+
+  .admin-promo-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .admin-promo-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    width: 100%;
+    scrollbar-width: none;
+  }
+
+  .admin-promo-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-promo-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .admin-promo-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-toast-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-promo-stats-grid {
+    grid-template-columns: 1fr;
+  }
 }

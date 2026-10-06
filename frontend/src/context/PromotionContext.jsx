@@ -77,63 +77,72 @@ export function getPromotionStatus(promo, now = new Date()) {
 
 const PromotionContext = createContext(null);
 
+function getAuthHeaders() {
+  const token = localStorage.getItem('kwt_candidate_token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 export function PromotionProvider({ children }) {
-  const [promotions, setPromotions] = useState(() => {
-    // Purge outdated storage keys
+  const [promotions, setPromotions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [apiError, setApiError] = useState(null);
+
+  // Purge obsolete localStorage promotion caches on startup
+  useEffect(() => {
     try {
+      localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem('kodewar_promotions_v1');
       localStorage.removeItem('kodewar_promotions_v2');
       localStorage.removeItem('kodewar_promotions_v3');
     } catch (_) { /* ignore */ }
-
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          // Filter out any obsolete /offers/ local paths
-          const validOnly = parsed.filter((p) => p.image && !p.image.startsWith('/offers/'));
-          if (validOnly.length > 0) return validOnly;
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to load promotions from localStorage', e);
-    }
-    return DEFAULT_PROMOTIONS;
-  });
-
-  // Fetch promotions from backend API on mount
-  useEffect(() => {
-    let isMounted = true;
-    async function fetchApiPromotions() {
-      try {
-        const res = await fetch(`${API_BASE_URL}/promotions`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.success && Array.isArray(data.promotions) && data.promotions.length > 0) {
-          if (isMounted) {
-            setPromotions(data.promotions);
-          }
-        }
-      } catch (err) {
-        console.warn('[PromotionContext] Could not fetch promotions from API, using cached state:', err);
-      }
-    }
-
-    fetchApiPromotions();
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
-  // Sync state to localStorage
-  useEffect(() => {
+  // Fetch promotions from authoritative backend API
+  const fetchPromotions = useCallback(async () => {
+    setIsLoading(true);
+    setApiError(null);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(promotions));
-    } catch (e) {
-      console.error('Failed to save promotions to localStorage', e);
+      const res = await fetch(`${API_BASE_URL}/promotions?_t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache',
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server returned HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      if (data.success && Array.isArray(data.promotions)) {
+        setPromotions(data.promotions);
+      } else {
+        throw new Error(data.message || 'Invalid promotions payload received');
+      }
+    } catch (err) {
+      console.error('[PromotionContext] Failed to fetch promotions from API:', err);
+      setApiError('Unable to connect to the KODEWAR server.');
+
+      // Development-only fallback: only show starter posters in local development mode
+      if (import.meta.env.DEV) {
+        console.warn('[PromotionContext] DEV fallback: Using default starter templates.');
+        setPromotions(DEFAULT_PROMOTIONS);
+      } else {
+        // In production: NEVER silently overwrite with hardcoded defaults.
+        setPromotions([]);
+      }
+    } finally {
+      setIsLoading(false);
     }
-  }, [promotions]);
+  }, []);
+
+  useEffect(() => {
+    fetchPromotions();
+  }, [fetchPromotions]);
 
   // Promotions enriched with computed status
   const enrichedPromotions = useMemo(() => {
@@ -171,87 +180,76 @@ export function PromotionProvider({ children }) {
     })[0];
   }, [enrichedPromotions]);
 
-  // CRUD Actions
-  const createPromotion = useCallback((promoData) => {
-    const now = new Date().toISOString();
-    const newPromo = {
-      id: promoData.id || 'promo-' + Date.now(),
-      title: promoData.title || 'Untitled Promotion',
-      image: promoData.imageUrl || promoData.image || '',
-      imageUrl: promoData.imageUrl || promoData.image || '',
-      cloudinaryPublicId: promoData.cloudinaryPublicId || '',
-      destinationUrl: promoData.destinationUrl || '',
-      openInNewTab: Boolean(promoData.openInNewTab),
-      homepageBanner: Boolean(promoData.homepageBanner),
-      popup: promoData.popup !== undefined ? Boolean(promoData.popup) : true,
-      enabled: promoData.enabled !== undefined ? Boolean(promoData.enabled) : true,
-      startDate: promoData.startDate || '',
-      endDate: promoData.endDate || '',
-      popupDelay: Number(promoData.popupDelay) || 3,
-      popupFrequency: promoData.popupFrequency || 'session',
-      autoClose: Boolean(promoData.autoClose),
-      autoCloseDuration: Number(promoData.autoCloseDuration) || 5,
-      priority: Number(promoData.priority) || 1,
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    setPromotions((prev) => [newPromo, ...prev]);
-    return newPromo;
-  }, []);
-
-  const updatePromotion = useCallback((id, updatedFields) => {
-    setPromotions((prev) =>
-      prev.map((promo) => {
-        if (promo.id === id) {
-          const img = updatedFields.imageUrl || updatedFields.image || promo.image || promo.imageUrl;
-          return {
-            ...promo,
-            ...updatedFields,
-            image: img,
-            imageUrl: img,
-            updatedAt: new Date().toISOString(),
-          };
-        }
-        return promo;
-      })
-    );
-  }, []);
-
-  const deletePromotion = useCallback((id) => {
-    setPromotions((prev) => prev.filter((promo) => promo.id !== id));
-  }, []);
-
-  const togglePromotionEnabled = useCallback((id) => {
-    setPromotions((prev) =>
-      prev.map((promo) => {
-        if (promo.id === id) {
-          return {
-            ...promo,
-            enabled: !promo.enabled,
-            updatedAt: new Date().toISOString(),
-          };
-        }
-        return promo;
-      })
-    );
-  }, []);
-
-  const duplicatePromotion = useCallback((id) => {
-    setPromotions((prev) => {
-      const source = prev.find((p) => p.id === id);
-      if (!source) return prev;
-      const now = new Date().toISOString();
-      const duplicate = {
-        ...source,
-        id: 'promo-' + Date.now(),
-        title: `${source.title} (Copy)`,
-        createdAt: now,
-        updatedAt: now,
-      };
-      return [duplicate, ...prev];
+  // CRUD Actions — Persisted through Backend API
+  const createPromotion = useCallback(async (promoData) => {
+    const res = await fetch(`${API_BASE_URL}/admin/promotions`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(promoData),
     });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Promotion could not be saved to server.');
+    }
+
+    const created = data.promotion;
+    setPromotions((prev) => [created, ...prev.filter((p) => p.id !== created.id)]);
+    return created;
   }, []);
+
+  const updatePromotion = useCallback(async (id, updatedFields) => {
+    const res = await fetch(`${API_BASE_URL}/admin/promotions/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(updatedFields),
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Promotion could not be updated on server.');
+    }
+
+    const updated = data.promotion;
+    setPromotions((prev) => prev.map((p) => (p.id === id ? updated : p)));
+    return updated;
+  }, []);
+
+  const deletePromotion = useCallback(async (id) => {
+    const res = await fetch(`${API_BASE_URL}/admin/promotions/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Failed to delete promotion on server.');
+    }
+
+    setPromotions((prev) => prev.filter((promo) => promo.id !== id));
+    return true;
+  }, []);
+
+  const togglePromotionEnabled = useCallback(async (id) => {
+    const current = promotions.find((p) => p.id === id);
+    if (!current) return;
+    return updatePromotion(id, { enabled: !current.enabled });
+  }, [promotions, updatePromotion]);
+
+  const duplicatePromotion = useCallback(async (id) => {
+    const source = promotions.find((p) => p.id === id);
+    if (!source) return;
+    const duplicatePayload = {
+      ...source,
+      id: undefined,
+      title: `${source.title} (Copy)`,
+    };
+    return createPromotion(duplicatePayload);
+  }, [promotions, createPromotion]);
+
+  const refreshPromotions = useCallback(() => {
+    return fetchPromotions();
+  }, [fetchPromotions]);
 
   const resetToDefaults = useCallback(() => {
     setPromotions(DEFAULT_PROMOTIONS);
@@ -262,11 +260,14 @@ export function PromotionProvider({ children }) {
       promotions: enrichedPromotions,
       activeBannerPromotion,
       activePopupPromotion,
+      isLoading,
+      apiError,
       createPromotion,
       updatePromotion,
       deletePromotion,
       togglePromotionEnabled,
       duplicatePromotion,
+      refreshPromotions,
       resetToDefaults,
       setPromotions,
     }),
@@ -274,11 +275,14 @@ export function PromotionProvider({ children }) {
       enrichedPromotions,
       activeBannerPromotion,
       activePopupPromotion,
+      isLoading,
+      apiError,
       createPromotion,
       updatePromotion,
       deletePromotion,
       togglePromotionEnabled,
       duplicatePromotion,
+      refreshPromotions,
       resetToDefaults,
     ]
   );

@@ -149,17 +149,32 @@ CREATE INDEX IF NOT EXISTS idx_testimonials_status ON testimonials(status);
 CREATE TABLE IF NOT EXISTS promotions (
     id VARCHAR(128) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    placement VARCHAR(32) NOT NULL DEFAULT 'BANNER', -- 'BANNER' | 'POPUP'
+    placement VARCHAR(32) NOT NULL DEFAULT 'BANNER', -- 'BANNER' | 'POPUP' | 'BOTH'
     image_url TEXT NOT NULL,
+    cloudinary_public_id VARCHAR(255),
     target_url TEXT,
     priority INT NOT NULL DEFAULT 1,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     start_date TIMESTAMPTZ,
     end_date TIMESTAMPTZ,
     display_frequency VARCHAR(64) DEFAULT 'ONCE_PER_SESSION',
+    popup_delay INT DEFAULT 3,
+    auto_close BOOLEAN DEFAULT FALSE,
+    auto_close_duration INT DEFAULT 5,
+    open_in_new_tab BOOLEAN DEFAULT FALSE,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS cloudinary_public_id VARCHAR(255);
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS popup_delay INT DEFAULT 3;
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS auto_close BOOLEAN DEFAULT FALSE;
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS auto_close_duration INT DEFAULT 5;
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS open_in_new_tab BOOLEAN DEFAULT FALSE;
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS created_by VARCHAR(255);
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS updated_by VARCHAR(255);
 
 CREATE INDEX IF NOT EXISTS idx_promotions_active ON promotions(is_active);
 CREATE INDEX IF NOT EXISTS idx_promotions_placement ON promotions(placement);

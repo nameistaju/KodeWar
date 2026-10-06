@@ -23,7 +23,7 @@ const TEAM_MEMBERS = [
     img: '/Koushik-GMB.png',
   },
   {
-    name: 'Kumari',
+    name: 'Nisha',
     role: 'Python Developer',
     img: '/Kumari-PythonDevloper.png',
   },
@@ -58,7 +58,7 @@ const TEAM_MEMBERS = [
     img: '/Varshini- devloper.png',
   },
   {
-    name: 'Tillu',
+    name: 'Srinivas',
     role: 'Manager',
     img: '/tillu-Manager.png',
   },

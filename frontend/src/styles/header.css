@@ -195,6 +195,18 @@
   display: none;
 }
 
+@media (min-width: 1025px) and (max-width: 1240px) {
+  .site-nav {
+    padding: 16px 24px;
+  }
+  .nav-links {
+    gap: 18px;
+  }
+  .nav-actions {
+    gap: 12px;
+  }
+}
+
 @media(max-width: 1024px) {
   .nav-center,
   .nav-actions {

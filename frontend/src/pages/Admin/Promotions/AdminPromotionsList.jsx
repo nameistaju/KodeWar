@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { usePromotions } from '../../../context/PromotionContext';
 import AdminLayout from '../../../layouts/AdminLayout';
+import AdminConfirmModal from '../../../components/admin/AdminConfirmModal';
 import './adminPromotions.css';
 
 export default function AdminPromotionsList() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const {
     promotions,
     activeBannerPromotion,
@@ -19,6 +22,32 @@ export default function AdminPromotionsList() {
   const [previewPromo, setPreviewPromo] = useState(null);
   const [previewSurface, setPreviewSurface] = useState('popup'); // 'popup' | 'banner'
 
+  // Modal and Toast state
+  const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, id: null, title: '' });
+  const [resetConfirm, setResetConfirm] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const triggerToast = (toastObj) => {
+    setToast(toastObj);
+    setTimeout(() => {
+      setToast((current) => (current?.id === toastObj.id ? null : current));
+    }, 4000);
+  };
+
+  // Listen for navigation flash messages (e.g. from create/update)
+  useEffect(() => {
+    if (location.state?.flash) {
+      triggerToast({
+        id: Date.now(),
+        type: 'success',
+        title: 'Promotion Published',
+        message: location.state.flash,
+      });
+      // Clear state so reload doesn't re-trigger
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
+
   // Filter promotions by tab
   const filteredPromotions = promotions.filter((p) => {
     if (activeTab === 'ALL') return true;
@@ -28,15 +57,35 @@ export default function AdminPromotionsList() {
   const activeCount = promotions.filter((p) => p.computedStatus === 'ACTIVE').length;
 
   const handleDelete = (id, title) => {
-    if (window.confirm(`Are you sure you want to delete the promotion "${title}"?`)) {
-      deletePromotion(id);
-    }
+    setDeleteConfirm({ isOpen: true, id, title });
+  };
+
+  const executeDelete = () => {
+    if (!deleteConfirm.id) return;
+    const titleToDelete = deleteConfirm.title;
+    deletePromotion(deleteConfirm.id);
+    setDeleteConfirm({ isOpen: false, id: null, title: '' });
+    triggerToast({
+      id: Date.now(),
+      type: 'danger',
+      title: 'Promotion Deleted',
+      message: `"${titleToDelete}" has been permanently removed.`,
+    });
   };
 
   const handleReset = () => {
-    if (window.confirm('Reset all promotions to default starter posters? Any custom promotions will be replaced.')) {
-      resetToDefaults();
-    }
+    setResetConfirm(true);
+  };
+
+  const executeReset = () => {
+    resetToDefaults();
+    setResetConfirm(false);
+    triggerToast({
+      id: Date.now(),
+      type: 'success',
+      title: 'Defaults Restored',
+      message: 'Promotional posters have been restored to default starters.',
+    });
   };
 
   return (
@@ -436,6 +485,65 @@ export default function AdminPromotionsList() {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* DELETE CONFIRMATION MODAL */}
+        <AdminConfirmModal
+          isOpen={deleteConfirm.isOpen}
+          title="Delete Promotion?"
+          message={`Are you sure you want to delete the promotion "${deleteConfirm.title}"? This campaign will be removed immediately from Homepage Banner and Popup slots.`}
+          confirmLabel="Delete Forever"
+          cancelLabel="Keep Promotion"
+          isDanger={true}
+          onConfirm={executeDelete}
+          onCancel={() => setDeleteConfirm({ isOpen: false, id: null, title: '' })}
+        />
+
+        {/* RESET DEFAULTS CONFIRMATION MODAL */}
+        <AdminConfirmModal
+          isOpen={resetConfirm}
+          title="Restore Default Starter Posters?"
+          message="Are you sure you want to reset all promotions to the default starter offer posters? Any custom promotional campaigns will be replaced."
+          confirmLabel="Reset Defaults"
+          cancelLabel="Cancel"
+          isDanger={true}
+          onConfirm={executeReset}
+          onCancel={() => setResetConfirm(false)}
+        />
+
+        {/* LUXURY TOAST NOTIFICATION */}
+        {toast && (
+          <div className="admin-toast-container">
+            <div className={`admin-toast ${toast.type}`}>
+              <div className="admin-toast-icon-wrap">
+                {toast.type === 'danger' ? (
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  </svg>
+                ) : (
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
+              <div className="admin-toast-content">
+                <div className="admin-toast-title">{toast.title}</div>
+                <div className="admin-toast-message">{toast.message}</div>
+              </div>
+              <button
+                type="button"
+                className="admin-toast-close"
+                onClick={() => setToast(null)}
+                aria-label="Close notification"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
             </div>
           </div>
         )}

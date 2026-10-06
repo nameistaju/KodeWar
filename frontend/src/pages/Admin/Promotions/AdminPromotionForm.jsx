@@ -36,6 +36,7 @@ export default function AdminPromotionForm() {
   const [previewAspect, setPreviewAspect] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [submitPhase, setSubmitPhase] = useState('');
   const [previewMode, setPreviewMode] = useState('popup'); // 'popup' | 'banner'
 
   const fileInputRef = useRef(null);
@@ -138,9 +139,19 @@ export default function AdminPromotionForm() {
     setIsDragOver(false);
   };
 
+  const [toast, setToast] = useState(null);
+
+  const triggerToast = (toastObj) => {
+    setToast(toastObj);
+    setTimeout(() => {
+      setToast((curr) => (curr?.id === toastObj.id ? null : curr));
+    }, 4500);
+  };
+
   // Submit Handler: uploads to Cloudinary via backend API
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    if (submitting) return; // Prevent duplicate submissions immediately
     setErrorMsg('');
 
     if (!title.trim()) {
@@ -159,6 +170,7 @@ export default function AdminPromotionForm() {
     }
 
     setSubmitting(true);
+    setSubmitPhase('Saving promotion...');
 
     try {
       const token = localStorage.getItem('kwt_candidate_token');
@@ -170,27 +182,34 @@ export default function AdminPromotionForm() {
       let finalImageUrl = image;
       let finalCloudinaryPublicId = existingPromo?.cloudinaryPublicId || '';
 
-      // If image is base64 string, upload to Cloudinary via backend service
+      // If image is a newly selected base64 string, upload to Cloudinary via backend service
       if (image.startsWith('data:image/')) {
-        const uploadRes = await fetch(`${API_BASE_URL}/admin/promotions/upload`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({
-            image,
-            title: title.trim(),
-            slugName: imageName || title.trim(),
-          }),
-        });
+        setSubmitPhase('Uploading artwork...');
+        let uploadRes;
+        try {
+          uploadRes = await fetch(`${API_BASE_URL}/admin/promotions/upload`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              image,
+              title: title.trim(),
+              slugName: imageName || title.trim(),
+            }),
+          });
+        } catch (netErr) {
+          throw new Error('Unable to connect to the KODEWAR server. Your promotion was not published.');
+        }
 
-        const uploadData = await uploadRes.json();
+        const uploadData = await uploadRes.json().catch(() => ({}));
         if (!uploadRes.ok || !uploadData.success) {
-          throw new Error(uploadData.message || 'Failed to upload promotion image to Cloudinary.');
+          throw new Error(uploadData.message || 'Artwork upload failed. The existing promotion has not been changed.');
         }
 
         finalImageUrl = uploadData.imageUrl;
         finalCloudinaryPublicId = uploadData.cloudinaryPublicId;
       }
 
+      setSubmitPhase('Saving promotion...');
       const payload = {
         title: title.trim(),
         image: finalImageUrl,
@@ -210,33 +229,47 @@ export default function AdminPromotionForm() {
         priority: Number(priority),
       };
 
-      // Persist in backend DB
-      const saveRes = await fetch(
-        isEditing ? `${API_BASE_URL}/admin/promotions/${id}` : `${API_BASE_URL}/admin/promotions`,
-        {
-          method: isEditing ? 'PUT' : 'POST',
-          headers,
-          body: JSON.stringify(payload),
-        }
-      );
-
-      const saveData = await saveRes.json();
-      if (!saveRes.ok || !saveData.success) {
-        console.warn('[Admin] DB sync notice:', saveData.message);
-      }
-
+      setSubmitPhase('Publishing campaign...');
       if (isEditing) {
-        updatePromotion(id, payload);
+        await updatePromotion(id, payload);
       } else {
-        createPromotion({ ...payload, id: saveData.promotion?.id || undefined });
+        await createPromotion(payload);
       }
 
-      navigate('/admin/promotions');
+      setSubmitPhase('Completed');
+      triggerToast({
+        id: Date.now(),
+        type: 'success',
+        title: isEditing ? 'Promotion Updated' : 'Promotion Published',
+        message: 'Promotion published successfully.',
+      });
+
+      // Navigate back to promotions list after brief completion feedback
+      setTimeout(() => {
+        navigate('/admin/promotions', { state: { flash: 'Promotion published successfully.' } });
+      }, 650);
     } catch (err) {
       console.error('Promotion submit error:', err);
-      setErrorMsg(err.message || 'Failed to save promotion. Please try again.');
+      const rawMsg = err.message || '';
+      let userFriendlyMsg = rawMsg;
+      if (rawMsg.includes('Failed to fetch') || rawMsg.includes('NetworkError') || rawMsg.includes('connect to the KODEWAR server')) {
+        userFriendlyMsg = 'Unable to connect to the KODEWAR server. Your promotion was not published.';
+      } else if (rawMsg.toLowerCase().includes('cloudinary') || rawMsg.toLowerCase().includes('artwork') || rawMsg.toLowerCase().includes('upload')) {
+        userFriendlyMsg = 'Artwork upload failed. The existing promotion has not been changed.';
+      } else if (rawMsg.toLowerCase().includes('database') || rawMsg.toLowerCase().includes('could not be saved') || rawMsg.toLowerCase().includes('remains unchanged')) {
+        userFriendlyMsg = 'Promotion could not be saved. The existing campaign remains unchanged.';
+      }
+
+      setErrorMsg(userFriendlyMsg);
+      triggerToast({
+        id: Date.now(),
+        type: 'danger',
+        title: 'Publish Failed',
+        message: userFriendlyMsg,
+      });
     } finally {
       setSubmitting(false);
+      setSubmitPhase('');
     }
   };
 
@@ -255,14 +288,32 @@ export default function AdminPromotionForm() {
             </div>
 
             <div className="admin-promo-actions-group">
-              <Link to="/admin/promotions" className="btn-admin-secondary">
+              <Link
+                to="/admin/promotions"
+                className="btn-admin-secondary"
+                style={submitting ? { pointerEvents: 'none', opacity: 0.5 } : {}}
+              >
                 Cancel
               </Link>
-              <button type="button" onClick={handleSubmit} className="btn-admin-primary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                {isEditing ? 'Update Promotion' : 'Publish Promotion'}
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="btn-admin-primary"
+                disabled={submitting}
+              >
+                {submitting ? (
+                  <>
+                    <span className="admin-spinner" />
+                    <span>{submitPhase || 'Saving promotion...'}</span>
+                  </>
+                ) : (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span>{isEditing ? 'Update Promotion' : 'Publish Promotion'}</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -676,18 +727,22 @@ export default function AdminPromotionForm() {
                   <div style={{ display: 'flex', gap: '8px', marginTop: '14px', justifyContent: 'center' }}>
                     <button
                       type="button"
+                      disabled={submitting}
                       onClick={() => fileInputRef.current?.click()}
                       className="btn-admin-secondary"
+                      style={submitting ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
                     >
                       Replace Poster
                     </button>
                     <button
                       type="button"
+                      disabled={submitting}
                       onClick={() => {
                         setImage('');
                         setImageName('');
                       }}
                       className="btn-admin-secondary btn-admin-danger"
+                      style={submitting ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
                     >
                       Remove
                     </button>
@@ -701,6 +756,7 @@ export default function AdminPromotionForm() {
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/svg+xml"
                 style={{ display: 'none' }}
+                disabled={submitting}
                 onChange={handleFileInputChange}
               />
 
@@ -712,6 +768,7 @@ export default function AdminPromotionForm() {
                 <div className="preset-pills-row">
                   <button
                     type="button"
+                    disabled={submitting}
                     className="preset-pill"
                     onClick={() => {
                       setImage('https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216612/kodewar/promotions/dussehra-special-2026.jpg');
@@ -723,6 +780,7 @@ export default function AdminPromotionForm() {
                   </button>
                   <button
                     type="button"
+                    disabled={submitting}
                     className="preset-pill"
                     onClick={() => {
                       setImage('https://res.cloudinary.com/dazbkmdcq/image/upload/f_auto,q_auto/v1791216610/kodewar/promotions/digital-growth-2026.jpg');
@@ -737,6 +795,82 @@ export default function AdminPromotionForm() {
             </div>
           </div>
         </form>
+
+        {/* BOTTOM ACTION BAR FOR MOBILE & ACCESSIBILITY */}
+        <div
+          style={{
+            marginTop: '24px',
+            paddingTop: '20px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '12px',
+          }}
+        >
+          <Link
+            to="/admin/promotions"
+            className="btn-admin-secondary"
+            style={submitting ? { pointerEvents: 'none', opacity: 0.5 } : {}}
+          >
+            Cancel
+          </Link>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="btn-admin-primary"
+            disabled={submitting}
+          >
+            {submitting ? (
+              <>
+                <span className="admin-spinner" />
+                <span>{submitPhase || 'Saving promotion...'}</span>
+              </>
+            ) : (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>{isEditing ? 'Update Promotion' : 'Publish Promotion'}</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* LUXURY TOAST NOTIFICATION */}
+        {toast && (
+          <div className="admin-toast-container">
+            <div className={`admin-toast ${toast.type}`}>
+              <div className="admin-toast-icon-wrap">
+                {toast.type === 'danger' ? (
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                ) : (
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
+              <div className="admin-toast-content">
+                <div className="admin-toast-title">{toast.title}</div>
+                <div className="admin-toast-message">{toast.message}</div>
+              </div>
+              <button
+                type="button"
+                className="admin-toast-close"
+                onClick={() => setToast(null)}
+                aria-label="Close notification"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
     </AdminLayout>

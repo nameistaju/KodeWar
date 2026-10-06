@@ -25,33 +25,36 @@ function createPublicIdSlug(nameOrTitle) {
 export const cloudinaryService = {
   /**
    * Uploads a promotional image to Cloudinary in `kodewar/promotions/`
+   * Uses versioned unique public IDs to eliminate CDN stale-caching issues.
    *
    * @param {string|Buffer} fileSource - Base64 Data URL, file path, or Buffer
-   * @param {string} [slugName] - Desired name for public_id slug (e.g. 'dussehra-2026')
+   * @param {string} [slugName] - Desired base name for public_id slug (e.g. 'dussehra-2026')
+   * @param {string} [promoId] - Optional promotion ID
    * @returns {Promise<{ imageUrl: string, cloudinaryPublicId: string, width: number, height: number, format: string }>}
    */
-  async uploadPromotionImage(fileSource, slugName) {
+  async uploadPromotionImage(fileSource, slugName, promoId) {
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
     if (!cloudName || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
       throw new Error('Cloudinary environment variables are missing on the backend server.');
     }
 
     const folder = 'kodewar/promotions';
-    const filenameSlug = createPublicIdSlug(slugName);
-    const publicId = `${folder}/${filenameSlug}`;
+    const baseSlug = createPublicIdSlug(slugName);
+    const versionTimestamp = Date.now();
+    const filenameSlug = `${baseSlug}-${versionTimestamp}`;
 
     try {
       const uploadResult = await cloudinary.uploader.upload(fileSource, {
         public_id: filenameSlug,
         folder: folder,
-        overwrite: true,
+        overwrite: false,
         resource_type: 'image',
         transformation: [
           { quality: 'auto', fetch_format: 'auto' }
         ]
       });
 
-      // Construct optimized URL with auto quality and format
+      // Construct secure URL
       const optimizedUrl = uploadResult.secure_url;
 
       return {
@@ -70,7 +73,7 @@ export const cloudinaryService = {
   /**
    * Deletes a promotional image from Cloudinary by public ID
    *
-   * @param {string} publicId - e.g. 'kodewar/promotions/dussehra-2026'
+   * @param {string} publicId - e.g. 'kodewar/promotions/dussehra-2026-1728212345'
    * @returns {Promise<boolean>}
    */
   async deletePromotionImage(publicId) {
@@ -83,23 +86,5 @@ export const cloudinaryService = {
       console.error('[Cloudinary Service] Delete Error:', err);
       return false; // Non-fatal if asset was already deleted
     }
-  },
-
-  /**
-   * Replaces an existing promotional image on Cloudinary
-   *
-   * @param {string} oldPublicId - Existing public_id to delete if different
-   * @param {string|Buffer} newFileSource - New image file
-   * @param {string} [slugName] - Desired new public ID slug
-   * @returns {Promise<{ imageUrl: string, cloudinaryPublicId: string }>}
-   */
-  async replacePromotionImage(oldPublicId, newFileSource, slugName) {
-    const uploadRes = await this.uploadPromotionImage(newFileSource, slugName);
-
-    if (oldPublicId && oldPublicId !== uploadRes.cloudinaryPublicId) {
-      await this.deletePromotionImage(oldPublicId);
-    }
-
-    return uploadRes;
   },
 };

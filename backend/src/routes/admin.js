@@ -7,6 +7,7 @@ import { authenticateUser, requireAdmin } from '../middleware/auth.js';
 import { storageService } from '../services/storageService.js';
 import { queryAuditLogs, writeAuditLog } from '../services/auditService.js';
 import { cloudinaryService } from '../services/cloudinaryService.js';
+import { formatPromotion } from './promotions.js';
 
 const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
@@ -1000,12 +1001,27 @@ router.post('/promotions/upload', upload.single('imageFile'), async (req, res) =
 
 // GET /api/admin/promotions
 router.get('/promotions', async (req, res) => {
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+    'Surrogate-Control': 'no-store',
+  });
+
   try {
     const list = (await db.get('promotions')) || [];
+    const formatted = list
+      .map(formatPromotion)
+      .sort((a, b) => {
+        const pDiff = (a.priority || 1) - (b.priority || 1);
+        if (pDiff !== 0) return pDiff;
+        return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+      });
+
     return res.json({
       success: true,
-      promotions: list,
-      total: list.length,
+      promotions: formatted,
+      total: formatted.length,
     });
   } catch (err) {
     console.error('Admin fetch promotions error:', err);
@@ -1020,6 +1036,7 @@ router.post('/promotions', async (req, res) => {
     let imageUrl = promoData.imageUrl || promoData.image || '';
     let cloudinaryPublicId = promoData.cloudinaryPublicId || promoData.cloudinary_public_id || '';
 
+    // If artwork is base64, upload securely to Cloudinary through backend
     if (imageUrl.startsWith('data:image/')) {
       const uploadRes = await cloudinaryService.uploadPromotionImage(imageUrl, promoData.title || 'promotion');
       imageUrl = uploadRes.imageUrl;
@@ -1033,10 +1050,20 @@ router.post('/promotions', async (req, res) => {
       });
     }
 
+    const promoId = promoData.id || 'promo-' + Date.now();
+    const now = new Date().toISOString();
+    const adminEmail = req.user?.email || 'admin@kodewar.com';
+
+    // Derive placement
+    const placement = promoData.placement || (
+      promoData.homepageBanner && promoData.popup ? 'BOTH' :
+      promoData.homepageBanner ? 'BANNER' : 'POPUP'
+    );
+
     const newPromo = await db.insert('promotions', {
-      id: promoData.id || 'promo-' + Date.now(),
+      id: promoId,
       title: (promoData.title || 'Untitled Promotion').trim(),
-      placement: promoData.placement || (promoData.homepageBanner && promoData.popup ? 'BOTH' : promoData.homepageBanner ? 'BANNER' : 'POPUP'),
+      placement,
       image_url: imageUrl,
       cloudinary_public_id: cloudinaryPublicId,
       target_url: promoData.destinationUrl || promoData.target_url || '',
@@ -1044,26 +1071,35 @@ router.post('/promotions', async (req, res) => {
       is_active: promoData.enabled !== undefined ? Boolean(promoData.enabled) : true,
       start_date: promoData.startDate || null,
       end_date: promoData.endDate || null,
-      display_frequency: promoData.popupFrequency || 'ONCE_PER_SESSION',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      display_frequency: promoData.popupFrequency || promoData.display_frequency || 'session',
+      popup_delay: Number(promoData.popupDelay) || 3,
+      auto_close: Boolean(promoData.autoClose),
+      auto_close_duration: Number(promoData.autoCloseDuration) || 5,
+      open_in_new_tab: Boolean(promoData.openInNewTab),
+      created_by: adminEmail,
+      updated_by: adminEmail,
+      created_at: now,
+      updated_at: now,
     });
 
     await writeAuditLog(req, {
       action: 'PROMOTION_CREATED',
       entity_type: 'PROMOTION',
       entity_id: newPromo.id,
-      metadata: { title: newPromo.title, image_url: newPromo.image_url },
+      metadata: { title: newPromo.title, image_url: newPromo.image_url, cloudinary_public_id: cloudinaryPublicId },
     });
 
     return res.status(201).json({
       success: true,
       message: 'Promotion published successfully.',
-      promotion: newPromo,
+      promotion: formatPromotion(newPromo),
     });
   } catch (err) {
     console.error('Admin create promotion error:', err);
-    return res.status(500).json({ success: false, message: 'Server error creating promotion.' });
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Server error creating promotion.',
+    });
   }
 });
 
@@ -1076,44 +1112,91 @@ router.put('/promotions/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Promotion not found.' });
     }
 
-    const updates = { ...req.body, updated_at: new Date().toISOString() };
+    const updates = {};
+    const oldCloudinaryPublicId = existing.cloudinary_public_id;
+    let newlyUploadedPublicId = null;
+
+    // Handle artwork update
     if (req.body.image || req.body.imageUrl) {
       let imageUrl = req.body.imageUrl || req.body.image;
       if (imageUrl.startsWith('data:image/')) {
-        const uploadRes = await cloudinaryService.replacePromotionImage(
-          existing.cloudinary_public_id,
+        // Step 1: Upload new artwork to Cloudinary
+        const uploadRes = await cloudinaryService.uploadPromotionImage(
           imageUrl,
-          req.body.title || existing.title
+          req.body.title || existing.title,
+          promoId
         );
         updates.image_url = uploadRes.imageUrl;
         updates.cloudinary_public_id = uploadRes.cloudinaryPublicId;
+        newlyUploadedPublicId = uploadRes.cloudinaryPublicId;
       } else {
         updates.image_url = imageUrl;
+        if (req.body.cloudinaryPublicId) {
+          updates.cloudinary_public_id = req.body.cloudinaryPublicId;
+        }
       }
     }
 
-    if (req.body.title) updates.title = req.body.title.trim();
-    if (req.body.destinationUrl !== undefined) updates.target_url = req.body.destinationUrl;
+    if (req.body.title !== undefined) updates.title = req.body.title.trim();
+    if (req.body.destinationUrl !== undefined || req.body.target_url !== undefined) {
+      updates.target_url = req.body.destinationUrl !== undefined ? req.body.destinationUrl : req.body.target_url;
+    }
     if (req.body.enabled !== undefined) updates.is_active = Boolean(req.body.enabled);
+    if (req.body.is_active !== undefined) updates.is_active = Boolean(req.body.is_active);
     if (req.body.priority !== undefined) updates.priority = Number(req.body.priority);
+    if (req.body.startDate !== undefined) updates.start_date = req.body.startDate || null;
+    if (req.body.endDate !== undefined) updates.end_date = req.body.endDate || null;
+    if (req.body.popupFrequency !== undefined) updates.display_frequency = req.body.popupFrequency;
+    if (req.body.popupDelay !== undefined) updates.popup_delay = Number(req.body.popupDelay);
+    if (req.body.autoClose !== undefined) updates.auto_close = Boolean(req.body.autoClose);
+    if (req.body.autoCloseDuration !== undefined) updates.auto_close_duration = Number(req.body.autoCloseDuration);
+    if (req.body.openInNewTab !== undefined) updates.open_in_new_tab = Boolean(req.body.openInNewTab);
 
+    if (req.body.homepageBanner !== undefined || req.body.popup !== undefined) {
+      const banner = req.body.homepageBanner !== undefined ? Boolean(req.body.homepageBanner) : (existing.placement === 'BANNER' || existing.placement === 'BOTH');
+      const popup = req.body.popup !== undefined ? Boolean(req.body.popup) : (existing.placement === 'POPUP' || existing.placement === 'BOTH');
+      updates.placement = banner && popup ? 'BOTH' : banner ? 'BANNER' : 'POPUP';
+    } else if (req.body.placement) {
+      updates.placement = req.body.placement;
+    }
+
+    // Server-derived audit metadata
+    updates.updated_at = new Date().toISOString();
+    updates.updated_by = req.user?.email || 'Admin';
+
+    // Step 2 & 3: Persist updates to the database FIRST
     const updated = await db.update('promotions', (p) => p.id === promoId, updates);
+    if (!updated) {
+      throw new Error('Promotion could not be saved to database. The existing campaign remains unchanged.');
+    }
+
+    // Step 4: ONLY after database update succeeds, delete previous Cloudinary asset
+    if (newlyUploadedPublicId && oldCloudinaryPublicId && oldCloudinaryPublicId !== newlyUploadedPublicId) {
+      try {
+        await cloudinaryService.deletePromotionImage(oldCloudinaryPublicId);
+      } catch (cleanupErr) {
+        console.warn('[Admin] Non-fatal cleanup notice for old Cloudinary asset:', cleanupErr.message);
+      }
+    }
 
     await writeAuditLog(req, {
       action: 'PROMOTION_UPDATED',
       entity_type: 'PROMOTION',
       entity_id: promoId,
-      metadata: { title: updated.title },
+      metadata: { title: updated.title, image_url: updated.image_url },
     });
 
     return res.json({
       success: true,
       message: 'Promotion updated successfully.',
-      promotion: updated,
+      promotion: formatPromotion(updated),
     });
   } catch (err) {
     console.error('Admin update promotion error:', err);
-    return res.status(500).json({ success: false, message: 'Server error updating promotion.' });
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Promotion could not be saved. The existing campaign remains unchanged.',
+    });
   }
 });
 
@@ -1126,6 +1209,7 @@ router.delete('/promotions/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Promotion not found.' });
     }
 
+    // Delete associated Cloudinary asset
     if (existing.cloudinary_public_id) {
       await cloudinaryService.deletePromotionImage(existing.cloudinary_public_id);
     }

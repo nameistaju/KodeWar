@@ -32,13 +32,27 @@ export function formatPromotion(p) {
 // --------------------------------------------------
 // GET /api/promotions
 // Public endpoint for active promotions
+// Cache-Control: strict no-cache/no-store to ensure immediate reflection
 // --------------------------------------------------
 router.get('/', async (req, res) => {
+  // Prevent browser & CDN caching so newly updated promotions reflect instantly
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+    'Surrogate-Control': 'no-store',
+  });
+
   try {
     const list = (await db.get('promotions')) || [];
     const formatted = list
       .map(formatPromotion)
-      .filter((p) => p && p.imageUrl); // return valid promotions with images
+      .filter((p) => p && p.imageUrl)
+      .sort((a, b) => {
+        const pDiff = (a.priority || 1) - (b.priority || 1);
+        if (pDiff !== 0) return pDiff;
+        return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+      });
 
     return res.json({
       success: true,
@@ -48,7 +62,7 @@ router.get('/', async (req, res) => {
     console.error('Fetch public promotions error:', err);
     return res.status(500).json({
       success: false,
-      message: 'Failed to fetch promotions.',
+      message: 'Failed to fetch promotions from server.',
     });
   }
 });

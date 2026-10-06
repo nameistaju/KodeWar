@@ -93,6 +93,9 @@ export default function Navbar() {
             <Link to="/about" className={isActive('/about') ? 'active' : ''}>
               About
             </Link>
+            <Link to="/contact" className={isActive('/contact') ? 'active' : ''}>
+              Contact
+            </Link>
           </div>
         </div>
 
@@ -190,6 +193,9 @@ export default function Navbar() {
           </Link>
           <Link to="/about" onClick={closeMenu} className={isActive('/about') ? 'active' : ''}>
             About
+          </Link>
+          <Link to="/contact" onClick={closeMenu} className={isActive('/contact') ? 'active' : ''}>
+            Contact
           </Link>
         </div>
 

@@ -16,16 +16,55 @@ export default function AdminLayout({ children, breadcrumbs = [] }) {
 
   const isCareerRoute = location.pathname.startsWith('/admin/careers');
 
+  // Lock background scroll when mobile sidebar is active
+  React.useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileOpen]);
+
+  // Automatically close sidebar drawer on route transition
+  React.useEffect(() => {
+    setIsMobileOpen(false);
+  }, [location.pathname]);
+
   return (
     <div className="admin-layout-wrapper">
+      {/* Mobile Drawer Backdrop */}
+      {isMobileOpen && (
+        <div
+          className="admin-sidebar-backdrop"
+          onClick={() => setIsMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* 1. ADMIN SIDEBAR */}
       <aside className={`admin-sidebar ${isMobileOpen ? 'open' : ''}`}>
         <div className="admin-sidebar-header">
-          <Link to="/admin" className="admin-brand-link" onClick={() => setIsMobileOpen(false)}>
-            <img src="/whitelogo_notext.png" alt="Kodewar" className="admin-brand-logo" />
-            <span className="admin-brand-title">KODEWAR</span>
-            <span className="admin-brand-badge">ADMIN</span>
-          </Link>
+          <div className="admin-sidebar-header-row">
+            <Link to="/admin" className="admin-brand-link" onClick={() => setIsMobileOpen(false)}>
+              <img src="/whitelogo_notext.png" alt="Kodewar" className="admin-brand-logo" />
+              <span className="admin-brand-title">KODEWAR</span>
+              <span className="admin-brand-badge">ADMIN</span>
+            </Link>
+            <button
+              type="button"
+              className="admin-sidebar-close-btn"
+              onClick={() => setIsMobileOpen(false)}
+              aria-label="Close admin menu"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
           <Link to="/" className="admin-return-link" target="_blank" rel="noopener noreferrer">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -210,20 +249,7 @@ export default function AdminLayout({ children, breadcrumbs = [] }) {
               href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/leads/export`}
               target="_blank"
               rel="noopener noreferrer"
-              className="admin-secondary-btn"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                background: '#10B981',
-                color: '#000000',
-                borderRadius: '4px',
-                textDecoration: 'none',
-                lineHeight: 1
-              }}
+              className="admin-secondary-btn admin-export-btn"
               title="Download all collected form leads in Excel / CSV format"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -231,7 +257,8 @@ export default function AdminLayout({ children, breadcrumbs = [] }) {
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              <span>Export Leads (.xlsx)</span>
+              <span className="admin-export-text">Export Leads (.xlsx)</span>
+              <span className="admin-export-short">Export</span>
             </a>
 
             <div className="admin-live-pill">
