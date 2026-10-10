@@ -57,11 +57,7 @@ const TEAM_MEMBERS = [
     role: 'Developer',
     img: '/Varshini- devloper.png',
   },
-  {
-    name: 'Srinivas',
-    role: 'Manager',
-    img: '/tillu-Manager.png',
-  },
+  
 ];
 
 export default function Team() {
