@@ -57,11 +57,6 @@ const TEAM_MEMBERS = [
     role: 'Developer',
     img: '/Varshini- devloper.png',
   },
-  {
-    name: 'Srinivas',
-    role: 'Manager',
-    img: '/tillu-Manager.png',
-  },
 ];
 
 export default function Team() {
@@ -134,7 +129,7 @@ export default function Team() {
         <div className="team-editorial-grid">
           {TEAM_MEMBERS.map((member, idx) => (
             <div
-              key={member.name}
+              key={`${member.name}-${member.role}`}
               className={`team-member-item item-offset-${idx % 4}`}
             >
               {/* Cutout Portrait - Absolutely NO background shapes, frames, or cards */}
